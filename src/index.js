@@ -1,42 +1,49 @@
 const present = require('present')
+const { config, format } = require('./utils')
 
-let allConfig = {
-  decimalDigits: 2,
-}
-const config = (updateConfig) => {
-  allConfig = { ...allConfig, ...updateConfig }
-}
+/**
+ * Map of timers.
+ * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
+ */
+const timers = {}
 
-const map = {} // map of timers, ex: { code1: { start: [t1], end: [t2], diff: [t2-t1], average } }
-
-const format = floatNum => parseFloat(floatNum.toFixed(allConfig.decimalDigits))
-
+/**
+ * Start a timer to measure code performance.
+ * The same timer can be started and ended multiple times.
+ * @param {string} key - Name of a new or existing timer.
+ * @returns {Object} - Timer object.
+ */
 const start = (key) => {
-  map[key] = map[key] || {
+  timers[key] = timers[key] || {
     start: [],
     end: [],
     // diff: [], // initialize these later to save cpu cycles.
     // sum: 0,
-    // average: 0,
+    // avg: 0,
   }
-  map[key].start.push(format(present()))
-  return map[key]
+  timers[key].start.push(format(present()))
+  return timers[key]
 }
 
+/**
+ * End an existing timer and calculate for diff, sum, avg.
+ * @param {string} key - Name of an existing timer.
+ * @returns {Object} - Timer object.
+ */
 const end = (key) => {
-  map[key].end.push(format(present()))
-  const item = map[key]
+  timers[key].end.push(format(present()))
+  const item = timers[key]
   item.diff = item.diff || []
   item.last = format(item.end[item.end.length - 1] - item.start[item.start.length - 1])
   item.diff.push(item.last)
   item.sum = format(item.diff.reduce((a, b) => a + b))
-  item.average = format(item.sum / item.diff.length)
+  item.avg = format(item.sum / item.diff.length)
   return item
 }
 
 export default {
   config,
-  map,
+  timers,
   start,
   end,
 }

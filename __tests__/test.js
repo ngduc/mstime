@@ -26,10 +26,10 @@ describe('mstime', () => {
       dummyLoop()
       const item = mstime.end('block2')
     }
-    expect(mstime.map.block2.start.length).toBe(LOOPS)
-    expect(mstime.map.block2.end.length).toBe(LOOPS)
-    expect(mstime.map.block2.sum).toBeGreaterThan(0)
-    expect(mstime.map.block2.average).toBeGreaterThan(0)
+    expect(mstime.timers.block2.start.length).toBe(LOOPS)
+    expect(mstime.timers.block2.end.length).toBe(LOOPS)
+    expect(mstime.timers.block2.sum).toBeGreaterThan(0)
+    expect(mstime.timers.block2.avg).toBeGreaterThan(0)
   })
 
   it('update config with mstime.config', () => {
@@ -37,13 +37,19 @@ describe('mstime', () => {
     mstime.start('block3')
     dummyLoop()
     mstime.end('block3')
-    decialPointIdx = mstime.map.block3.last.toString().indexOf('.')
+    decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
     expect(decialPointIdx).toBeGreaterThan(0)
     // update config to have zero decimal digits
     mstime.config({ decimalDigits: 0 })
     mstime.start('block3')
     mstime.end('block3')
-    decialPointIdx = mstime.map.block3.last.toString().indexOf('.')
+    decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
     expect(decialPointIdx).toBe(-1)
+  })
+
+  it('get config object', () => {
+    mstime.config({ decimalDigits: 5 })
+    const config = mstime.config()
+    expect(config.decimalDigits).toBe(5)
   })
 })
