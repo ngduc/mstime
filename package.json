@@ -1,6 +1,6 @@
 {
   "name": "mstime",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "a module to measure code performance in time (ms)",
   "main": "dist/cjs/index.js",
   "browser": "dist/umd/mstime.js",

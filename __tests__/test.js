@@ -2,6 +2,7 @@
 import mstime from '../src'
 
 describe('mstime', () => {
+  // helper
   const dummyLoop = () => {
     let j = 0
     for (let i = 0; i < 999999; i += 1) {
@@ -32,6 +33,12 @@ describe('mstime', () => {
     expect(mstime.timers.block2.avg).toBeGreaterThan(0)
   })
 
+  it('get config object', () => {
+    mstime.config({ decimalDigits: 5 })
+    const config = mstime.config()
+    expect(config.decimalDigits).toBe(5)
+  })
+
   it('update config with mstime.config', () => {
     let decialPointIdx = -1
     mstime.start('block3')
@@ -47,9 +54,10 @@ describe('mstime', () => {
     expect(decialPointIdx).toBe(-1)
   })
 
-  it('get config object', () => {
-    mstime.config({ decimalDigits: 5 })
-    const config = mstime.config()
-    expect(config.decimalDigits).toBe(5)
+  it('attach data object', () => {
+    mstime.start('block4', { moreData: 123 })
+    dummyLoop()
+    mstime.end('block4')
+    expect(mstime.timers.block4.data.moreData).toBe(123)
   })
 })
