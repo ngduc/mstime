@@ -15,6 +15,20 @@ export function config(updateConfig = {}) {
   return allConfig
 }
 
+/**
+ * Format a float number to have N digits (allConfig.decimalDigits).
+ * @param {number} floatNum - Float number to format.
+ * @returns {number} - Formatted number.
+ */
 export function format(floatNum) {
   return parseFloat(floatNum.toFixed(allConfig.decimalDigits))
+}
+
+/**
+ * Sum of all numbers in an array.
+ * @param {Array} arr - Array of numbers.
+ * @returns {number} - Sum of all numbers.
+ */
+export function sumArray(arr) {
+  return arr.reduce((a, b) => a + b)
 }

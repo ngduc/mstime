@@ -1,5 +1,5 @@
 const present = require('present')
-const { config, format } = require('./utils')
+const { config, format, sumArray } = require('./utils')
 
 /**
  * Map of timers.
@@ -36,7 +36,7 @@ const end = (key) => {
   item.diff = item.diff || []
   item.last = format(item.end[item.end.length - 1] - item.start[item.start.length - 1])
   item.diff.push(item.last)
-  item.sum = format(item.diff.reduce((a, b) => a + b))
+  item.sum = format(sumArray(item.diff))
   item.avg = format(item.sum / item.diff.length)
   return item
 }
