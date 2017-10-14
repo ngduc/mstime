@@ -1,5 +1,7 @@
 const present = require('present')
-const { config, format, sumArray } = require('./utils')
+const {
+  config, plugins, format, sumArray,
+} = require('./utils')
 
 /**
  * Map of timers.
@@ -11,10 +13,10 @@ const timers = {}
  * Start a timer to measure code performance.
  * The same timer can be started and ended multiple times.
  * @param {string} name - Name of a new or existing timer.
- * @param {Object} data - (optional) Attached data object.
+ * @param {Object} options - (optional) More options (data, etc.).
  * @returns {Object} - Timer object.
  */
-const start = (name, data = {}) => {
+const start = (name, options = {}) => {
   timers[name] = timers[name] || {
     start: [],
     end: [],
@@ -23,7 +25,9 @@ const start = (name, data = {}) => {
     // avg: 0,
   }
   timers[name].start.push(format(present()))
-  timers[name].data = data
+  if (options.data) {
+    timers[name].data = options.data
+  }
   return timers[name]
 }
 
@@ -46,6 +50,7 @@ const end = (name) => {
 
 export default {
   config,
+  plugins,
   timers,
   start,
   end,

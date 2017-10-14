@@ -55,9 +55,27 @@ describe('mstime', () => {
   })
 
   it('attach data object', () => {
-    mstime.start('block4', { moreData: 123 })
+    mstime.start('block4', { data: { moreData: 123 } })
     dummyLoop()
     mstime.end('block4')
     expect(mstime.timers.block4.data.moreData).toBe(123)
+  })
+
+  it('set plugins & plugins get instantiated with configs', () => {
+    let pluginInit1 = 0
+    let pluginInit2 = 0
+    const dummyPlugin1 = ({ config }) => {
+      pluginInit1 = config.param
+    }
+    const dummyPlugin2 = ({ config }) => {
+      pluginInit2 = config.param
+    }
+    mstime.plugins([
+      { plugin: dummyPlugin1, config: { param: 100 } },
+      { plugin: dummyPlugin2, config: { param: 200 } },
+    ])
+    expect(mstime.plugins().length).toBe(2)
+    expect(pluginInit1).toBe(100)
+    expect(pluginInit2).toBe(200)
   })
 })

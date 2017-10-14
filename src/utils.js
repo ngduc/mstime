@@ -5,6 +5,8 @@ let allConfig = {
   decimalDigits: 2,
 }
 
+let allPlugins = []
+
 /**
  * Update or get config object. This will override the default config's properties.
  * @param {Object} updateConfig - (optional) config object to update.
@@ -13,6 +15,25 @@ let allConfig = {
 export function config(updateConfig = {}) {
   allConfig = { ...allConfig, ...updateConfig }
   return allConfig
+}
+
+/**
+ * Get or Set an array of plugins and their configs.
+ * After setting plugin array, each plugin will be instantiated with config.
+ * @param {Array} pluginArray - Array of plugins and their configs.
+ * @example mstime.plugins([ { plugin: require('mstime-plugin-post'), config: { url: '' } } ])
+ * @example mstime.plugins() // return array of plugins.
+ */
+export function plugins(pluginArray) {
+  if (pluginArray) {
+    allPlugins = pluginArray
+    // iterate through plugins & instantiate plugin with config:
+    for (let i = 0; i < allPlugins.length; i += 1) {
+      const pluginObject = allPlugins[i]
+      pluginObject.plugin({ config: pluginObject.config })
+    }
+  }
+  return allPlugins
 }
 
 /**
