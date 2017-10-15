@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import mstime from '../src'
+import present from 'present'
 
 describe('mstime', () => {
   // helper
   const dummyLoop = () => {
     let j = 0
-    for (let i = 0; i < 999999; i += 1) {
+    for (let i = 0; i < 9999999; i += 1) {
       j += 1
     }
   }
@@ -14,10 +15,11 @@ describe('mstime', () => {
     mstime.start('block1')
     dummyLoop()
     const item = mstime.end('block1')
-    expect(item.start).not.toBeNull()
-    expect(Array.isArray(item.start)).toBeTruthy()
-    expect(item.end).not.toBeNull()
-    expect(Array.isArray(item.end)).toBeTruthy()
+    const entry = item.entries[item.entries.length - 1]
+    expect(Array.isArray(item.entries)).toBeTruthy()
+    expect(entry.start).not.toBeNull()
+    expect(entry.end).not.toBeNull()
+    expect(entry.diff).not.toBeNull()
   })
 
   it('measure time multiple times', () => {
@@ -27,8 +29,8 @@ describe('mstime', () => {
       dummyLoop()
       const item = mstime.end('block2')
     }
-    expect(mstime.timers.block2.start.length).toBe(LOOPS)
-    expect(mstime.timers.block2.end.length).toBe(LOOPS)
+    expect(mstime.timers.block2.entries.length).toBe(LOOPS)
+    expect(mstime.timers.block2.entries.length).toBe(LOOPS)
     expect(mstime.timers.block2.sum).toBeGreaterThan(0)
     expect(mstime.timers.block2.avg).toBeGreaterThan(0)
   })
@@ -58,7 +60,9 @@ describe('mstime', () => {
     mstime.start('block4', { data: { moreData: 123 } })
     dummyLoop()
     mstime.end('block4')
-    expect(mstime.timers.block4.data.moreData).toBe(123)
+    const item = mstime.end('block4')
+    const entry = item.entries[item.entries.length - 1]
+    expect(entry.data.moreData).toBe(123)
   })
 
   it('set plugins & plugins get instantiated with configs', () => {
@@ -77,5 +81,21 @@ describe('mstime', () => {
     expect(mstime.plugins().length).toBe(2)
     expect(pluginInit1).toBe(100)
     expect(pluginInit2).toBe(200)
+  })
+
+  it('has plugin to process timers & set to output', () => {
+    const pluginInit1 = 0
+    const dummyPlugin1 = ({ config }) => ({
+      name: 'mstime-plugin-dummy',
+      run: timerData => ({
+        createdAt: present(),
+        totalEntries: timerData.entries.length,
+      }),
+    })
+    mstime.plugins([{ plugin: dummyPlugin1, config: { param: 100 } }])
+    mstime.start('block5')
+    dummyLoop()
+    mstime.end('block5')
+    expect(mstime.timers.block5.output['mstime-plugin-dummy'].totalEntries).toBe(1)
   })
 })

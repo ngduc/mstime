@@ -21,6 +21,7 @@ export function config(updateConfig = {}) {
  * Get or Set an array of plugins and their configs.
  * After setting plugin array, each plugin will be instantiated with config.
  * @param {Array} pluginArray - Array of plugins and their configs.
+ * @returns {Array} - Array of all plugins.
  * @example mstime.plugins([ { plugin: require('mstime-plugin-post'), config: { url: '' } } ])
  * @example mstime.plugins() // return array of plugins.
  */
@@ -30,7 +31,7 @@ export function plugins(pluginArray) {
     // iterate through plugins & instantiate plugin with config:
     for (let i = 0; i < allPlugins.length; i += 1) {
       const pluginObject = allPlugins[i]
-      pluginObject.plugin({ config: pluginObject.config })
+      pluginObject.instance = pluginObject.plugin({ config: pluginObject.config })
     }
   }
   return allPlugins

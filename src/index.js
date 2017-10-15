@@ -18,16 +18,18 @@ const timers = {}
  */
 const start = (name, options = {}) => {
   timers[name] = timers[name] || {
-    start: [],
-    end: [],
-    // diff: [], // initialize these later to save cpu cycles.
+    entries: [],
+    // last: 0, // calculate for these later. (on end())
     // sum: 0,
     // avg: 0,
   }
-  timers[name].start.push(format(present()))
-  if (options.data) {
-    timers[name].data = options.data
+  const entry = {
+    start: format(present()),
   }
+  if (options.data) {
+    entry.data = options.data
+  }
+  timers[name].entries.push(entry)
   return timers[name]
 }
 
@@ -37,14 +39,27 @@ const start = (name, options = {}) => {
  * @returns {Object} - Timer object.
  */
 const end = (name) => {
-  timers[name].end.push(format(present()))
-  // calculate for more useful properties:
+  const { entries } = timers[name]
+  const lastEntry = entries[entries.length - 1]
+  lastEntry.end = format(present())
+  lastEntry.diff = format(lastEntry.end - lastEntry.start)
+
   const item = timers[name]
-  item.diff = item.diff || []
-  item.last = format(item.end[item.end.length - 1] - item.start[item.start.length - 1])
-  item.diff.push(item.last)
-  item.sum = format(sumArray(item.diff))
-  item.avg = format(item.sum / item.diff.length)
+  item.last = lastEntry.diff
+
+  const diffArr = entries.map(e => e.diff)
+  item.sum = format(sumArray(diffArr))
+  item.avg = format(item.sum / entries.length)
+  item.output = {}
+
+  const allPlugins = plugins()
+  for (let i = 0; i < allPlugins.length; i += 1) {
+    const pluginObject = allPlugins[i]
+    const { instance } = pluginObject
+    if (instance && instance.run) {
+      item.output[instance.name] = instance.run(item)
+    }
+  }
   return item
 }
 
