@@ -25,9 +25,9 @@ const result = mstime.end('codeblock1')
 `result` is a JSON object: (all values are in milliseconds)
 
     {
-      start: [ 41991120.53 ],
-      end: [ 41991133.04 ],
-      diff: [ 12.50 ],
+      entries: [
+        { start: 41991120.53, end: 41991133.04, diff: 12.50 }
+      ]
       last: 12.50,
       sum: 12.50,
       avg: 12.50
