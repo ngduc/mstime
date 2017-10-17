@@ -1,20 +1,24 @@
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 /**
  * Config object.
  */
-let allConfig = {
-  decimalDigits: 2,
-}
+var allConfig = {
+  decimalDigits: 2
+};
 
-let allPlugins = []
+var allPlugins = [];
 
 /**
  * Update or get config object. This will override the default config's properties.
  * @param {Object} updateConfig - (optional) config object to update.
  * @returns {Object} - Final config object.
  */
-export function config(updateConfig = {}) {
-  allConfig = { ...allConfig, ...updateConfig }
-  return allConfig
+export function config() {
+  var updateConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  allConfig = _extends({}, allConfig, updateConfig);
+  return allConfig;
 }
 
 /**
@@ -27,14 +31,14 @@ export function config(updateConfig = {}) {
  */
 export function plugins(pluginArray) {
   if (pluginArray) {
-    allPlugins = pluginArray
+    allPlugins = pluginArray;
     // iterate through plugins & instantiate plugin with config:
-    for (let i = 0; i < allPlugins.length; i += 1) {
-      const pluginObject = allPlugins[i]
-      pluginObject.plugin = pluginObject.plugin({ config: pluginObject.config })
+    for (var i = 0; i < allPlugins.length; i += 1) {
+      var pluginObject = allPlugins[i];
+      pluginObject.plugin = pluginObject.plugin({ config: pluginObject.config });
     }
   }
-  return allPlugins
+  return allPlugins;
 }
 
 /**
@@ -43,7 +47,7 @@ export function plugins(pluginArray) {
  * @returns {number} - Formatted number.
  */
 export function format(floatNum) {
-  return parseFloat(floatNum.toFixed(allConfig.decimalDigits))
+  return parseFloat(floatNum.toFixed(allConfig.decimalDigits));
 }
 
 /**
@@ -52,5 +56,7 @@ export function format(floatNum) {
  * @returns {number} - Sum of all numbers.
  */
 export function sumArray(arr) {
-  return arr.reduce((a, b) => a + b)
+  return arr.reduce(function (a, b) {
+    return a + b;
+  });
 }

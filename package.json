@@ -1,6 +1,6 @@
 {
   "name": "mstime",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a module to measure code performance in time (ms)",
   "main": "dist/cjs/index.js",
   "browser": "dist/umd/mstime.js",
@@ -58,7 +58,7 @@
     "codecov": "^2.3.0",
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.5",
-    "eslint": "^4.6.0",
+    "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.0.2",
     "eslint-config-devine": "^1.7.1",
     "eslint-plugin-babel": "^4.1.2",
@@ -74,7 +74,7 @@
     "rollup": "^0.39.2",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-bundle-size": "^1.0.1",
-    "rollup-plugin-commonjs": "^8.2.0",
+    "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1"
   },

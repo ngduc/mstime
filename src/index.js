@@ -1,4 +1,4 @@
-const present = require('present')
+const present = require('./present')
 const {
   config, plugins, format, sumArray,
 } = require('./utils')
@@ -17,6 +17,8 @@ const timers = {}
  * @returns {Object} - Timer object.
  */
 const start = (name, options = {}) => {
+  console.time(name)
+  const startTime = present()
   timers[name] = timers[name] || {
     entries: [],
     // last: 0, // calculate for these later. (on end())
@@ -24,7 +26,7 @@ const start = (name, options = {}) => {
     // avg: 0,
   }
   const entry = {
-    start: format(present()),
+    start: format(startTime),
   }
   if (options.data) {
     entry.data = options.data
@@ -39,27 +41,33 @@ const start = (name, options = {}) => {
  * @returns {Object} - Timer object.
  */
 const end = (name) => {
-  const { entries } = timers[name]
+  console.timeEnd(name)
+  const endTime = present()
+  const item = timers[name]
+  item.output = {}
+
+  const { entries } = item
   const lastEntry = entries[entries.length - 1]
-  lastEntry.end = format(present())
+  lastEntry.end = format(endTime)
   lastEntry.diff = format(lastEntry.end - lastEntry.start)
 
-  const item = timers[name]
+  // calculate for more useful values
   item.last = lastEntry.diff
 
   const diffArr = entries.map(e => e.diff)
   item.sum = format(sumArray(diffArr))
   item.avg = format(item.sum / entries.length)
-  item.output = {}
 
+  // run every Plugin & keep their outputs in "output {}"
   const allPlugins = plugins()
   for (let i = 0; i < allPlugins.length; i += 1) {
     const pluginObject = allPlugins[i]
-    const { instance } = pluginObject
-    if (instance && instance.run) {
-      item.output[instance.name] = instance.run(item)
+    const { plugin } = pluginObject
+    if (plugin && plugin.run) {
+      item.output[plugin.name] = plugin.run(item)
     }
   }
+
   return item
 }
 

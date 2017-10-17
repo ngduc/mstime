@@ -35,9 +35,29 @@ const result = mstime.end('codeblock1')
 
 Available builds (dist): CommonJS, ES, UMD.
 
-## Example
+## Example / Demo
 
 https://runkit.com/ngduc/mstime
+
+## Plugin
+
+Plugins offer more useful abilities on the captured data.
+
+A plugin is just a function that processes data and returns this structure:
+
+```js
+const plugin = ({ config }) => ({
+  name: 'mstime-plugin-example',
+  run: (timerData) => {
+    const output = 'do something useful here with timerData...'
+    return {
+      createdAt: present(),
+      output // property & value can be anything
+    }
+  }
+})
+```
+`run` function will get called on `mstime.end` and its result will be put in timerData.output
 
 ## Dependencies
 

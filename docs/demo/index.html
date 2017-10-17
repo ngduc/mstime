@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="">
+  <style></style>
+
+  <script>
+    // https://github.com/Stuk/require1k/blob/master/require1k.min.js
+    R = function (e, n, v1) { function t(e, o, u, a) { if (e.g) return o(e.e, e); var c = e.g = e.l, f = new XMLHttpRequest; f.onload = function (i, l) { function s() { l-- || o(n, e) } 200 == f.status || e.t ? (i = [], (e.t = e.t || f.response).replace(/(?:^|[^\w\$_.])require\s*\(\s*["']([^"']*)["']\s*\)/g, function (e, n) { i.push(n) }), l = i.length, i.map(function (o) { t(r(e.l, o), s, "." != o[0] ? c + "/../" : n, o) }), s()) : u ? t(e.n = r(u += "../", a), o, u, a) : (e.e = f, o(f, e)) }, e.t ? f.onload() : (f.open("GET", c, !0), f.send()) } function r(e, n, t) { if (e.e) throw e.e; return n ? (f.href = e, i.href = "." != n[0] ? "./node_modules/" + n : n, t = i.href + ".js", f.href = "", u[t] = u[t] || { l: t }) : e.n ? r(e.n) : (e[c] || (e.f || a("(function(require," + c + ",module){" + e.t + "\n})//# sourceURL=" + e.l))(function (n) { return r(r(e.l, n)) }, e[c] = {}, e), e[c]) } function o(e, n) { t(e.call ? { l: "", t: "" + e, f: e } : r("", e), function (t, o) { try { e = r(o) } catch (u) { t = u } n && n(t, e) }) } var u = {}, a = eval, c = "createElement", f = e[c]("base"), i = e[c]("a"); return e.head.appendChild(f), c = e.querySelector("script[data-main]"), c && o(c.dataset.main), c = "exports", o }(document);
+  </script>
+
+</head>
+
+<body>
+  <div id="mydiv" class=""></div>
+
+  <script type="text/javascript">
+    var global = window; // for "present" module.
+    R("../../dist/cjs/index", function (err, mstime) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      // use the exports object as needed
+      mstime.start('timer1');
+      var t1 = (new Date()).getTime()
+      let k = 0
+      for (let i = 0; i < 99999999; i += 1) {
+        k += i
+      }
+      var t2 = (new Date()).getTime()
+      console.log('getTime diff: ', t2 - t1, 'ms');
+
+      console.log('mstime: ', mstime.end('timer1'));
+    });
+  </script>
+</body>
+
+</html>
