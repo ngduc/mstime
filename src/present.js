@@ -1,4 +1,5 @@
 /* eslint-disable */
+// source: https://github.com/dbkaplun/present
 const performance = window.performance || {}
 
 const present = (function() {

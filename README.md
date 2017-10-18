@@ -61,9 +61,6 @@ const plugin = ({ config }) => ({
 
 ## Dependencies
 
-`mstime` use `present` to get time (in ms)
-<https://github.com/dbkaplun/present>
-
 ## License
 
 MIT © [Duc Nguyen](https://github.com/ngduc)

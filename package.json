@@ -1,6 +1,6 @@
 {
   "name": "mstime",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "a module to measure code performance in time (ms)",
   "main": "dist/cjs/index.js",
   "browser": "dist/umd/mstime.js",
@@ -48,6 +48,12 @@
   "bugs": {
     "url": "https://github.com/ngduc/mstime/issues"
   },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/present.js"
+    ]
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -78,7 +84,5 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1"
   },
-  "dependencies": {
-    "present": "^1.0.0"
-  }
+  "dependencies": {}
 }

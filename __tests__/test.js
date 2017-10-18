@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import present from 'present'
 import mstime from '../src'
 
 describe('mstime', () => {
@@ -58,7 +57,7 @@ describe('mstime', () => {
     decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
     expect(decialPointIdx).toBeGreaterThan(0)
     // update config to have zero decimal digits
-    mstime.config({ decimalDigits: 0 })
+    mstime.config({ decimalDigits: 0, consoleTime: true })
     mstime.start('block3')
     mstime.end('block3')
     decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
@@ -99,7 +98,7 @@ describe('mstime', () => {
       run: (timerData) => {
         const output = 'do something useful here...'
         return {
-          createdAt: present(),
+          createdAt: new Date().getTime(),
           output,
           totalEntries: timerData.entries.length,
         }

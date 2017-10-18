@@ -1,6 +1,8 @@
 'use strict';
 
 exports.__esModule = true;
+/* eslint-disable no-console */
+
 var present = require('./present');
 
 var _require = require('./utils'),
@@ -88,6 +90,14 @@ var end = function end(name) {
   return item;
 };
 
+/**
+ * Clear a timer.
+ * @param {string} name - Timer name to clear.
+ */
+var clear = function clear(name) {
+  delete timers[name];
+};
+
 // default plugin
 var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
   var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
@@ -114,6 +124,7 @@ exports.default = {
   timers: timers,
   start: start,
   end: end,
+  clear: clear,
   mstimePluginUseLocalStorage: mstimePluginUseLocalStorage
 };
 module.exports = exports['default'];

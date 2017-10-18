@@ -4,6 +4,8 @@
   (global.mstime = factory());
 }(this, (function () { 'use strict';
 
+/* eslint-disable no-console */
+
 var present = require('./present');
 
 var _require = require('./utils');
@@ -91,6 +93,14 @@ var end = function end(name) {
   return item;
 };
 
+/**
+ * Clear a timer.
+ * @param {string} name - Timer name to clear.
+ */
+var clear = function clear(name) {
+  delete timers[name];
+};
+
 // default plugin
 var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
   var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
@@ -117,6 +127,7 @@ var index = {
   timers: timers,
   start: start,
   end: end,
+  clear: clear,
   mstimePluginUseLocalStorage: mstimePluginUseLocalStorage
 };
 

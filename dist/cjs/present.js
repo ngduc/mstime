@@ -1,6 +1,7 @@
 'use strict';
 
 /* eslint-disable */
+// source: https://github.com/dbkaplun/present
 var performance = window.performance || {};
 
 var present = function () {
