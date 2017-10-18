@@ -23,7 +23,13 @@
         console.error(err);
         return;
       }
-      // use the exports object as needed
+      mstime.config({
+        consoleTime: true // enable: console.time()
+      })
+      mstime.plugins([{
+        plugin: mstime.mstimePluginUseLocalStorage, config: {}
+      }])
+
       mstime.start('timer1');
       var t1 = (new Date()).getTime()
       let k = 0

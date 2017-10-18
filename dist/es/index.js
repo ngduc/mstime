@@ -24,7 +24,9 @@ var timers = {};
 var start = function start(name) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  console.time(name);
+  if (config().consoleTime) {
+    console.time(name);
+  }
   var startTime = present();
   timers[name] = timers[name] || {
     entries: []
@@ -48,7 +50,9 @@ var start = function start(name) {
  * @returns {Object} - Timer object.
  */
 var end = function end(name) {
-  console.timeEnd(name);
+  if (config().consoleTime) {
+    console.timeEnd(name);
+  }
   var endTime = present();
   var item = timers[name];
   item.output = {};

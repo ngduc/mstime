@@ -27,7 +27,9 @@ var timers = {};
 var start = function start(name) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  console.time(name);
+  if (config().consoleTime) {
+    console.time(name);
+  }
   var startTime = present();
   timers[name] = timers[name] || {
     entries: []
@@ -51,7 +53,9 @@ var start = function start(name) {
  * @returns {Object} - Timer object.
  */
 var end = function end(name) {
-  console.timeEnd(name);
+  if (config().consoleTime) {
+    console.timeEnd(name);
+  }
   var endTime = present();
   var item = timers[name];
   item.output = {};
@@ -81,8 +85,27 @@ var end = function end(name) {
       item.output[plugin.name] = plugin.run(item);
     }
   }
-
   return item;
+};
+
+// default plugin
+var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
+  var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
+  if (mstimeTimersObj) {
+    timers = mstimeTimersObj;
+  }
+  return {
+    name: 'mstime-plugin-use-local-storage',
+    run: function run(timerData) {
+      global.localStorage.setItem('mstime.timers', JSON.stringify(timers));
+      var lsData = global.localStorage.getItem('mstime.timers');
+      return {
+        createdAt: new Date().getTime(),
+        totalEntries: timerData.entries.length,
+        size: lsData.length
+      };
+    }
+  };
 };
 
 exports.default = {
@@ -90,6 +113,7 @@ exports.default = {
   plugins: plugins,
   timers: timers,
   start: start,
-  end: end
+  end: end,
+  mstimePluginUseLocalStorage: mstimePluginUseLocalStorage
 };
 module.exports = exports['default'];

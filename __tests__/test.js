@@ -41,20 +41,20 @@ describe('mstime', () => {
     expect(config.decimalDigits).toBe(5)
   })
 
-  // it('update config with mstime.config', () => {
-  //   let decialPointIdx = -1
-  //   mstime.start('block3')
-  //   dummyLoop()
-  //   mstime.end('block3')
-  //   decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
-  //   expect(decialPointIdx).toBeGreaterThan(0)
-  //   // update config to have zero decimal digits
-  //   mstime.config({ decimalDigits: 0 })
-  //   mstime.start('block3')
-  //   mstime.end('block3')
-  //   decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
-  //   expect(decialPointIdx).toBe(-1)
-  // })
+  it('update config with mstime.config', () => {
+    let decialPointIdx = -1
+    mstime.start('block3')
+    dummyLoop()
+    mstime.end('block3')
+    decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
+    expect(decialPointIdx).toBeGreaterThan(0)
+    // update config to have zero decimal digits
+    mstime.config({ decimalDigits: 0 })
+    mstime.start('block3')
+    mstime.end('block3')
+    decialPointIdx = mstime.timers.block3.last.toString().indexOf('.')
+    expect(decialPointIdx).toBe(-1)
+  })
 
   it('attach data object', () => {
     mstime.start('block4', { data: { moreData: 123 } })

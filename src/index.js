@@ -7,7 +7,7 @@ const {
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
-const timers = {}
+let timers = {}
 
 /**
  * Start a timer to measure code performance.
@@ -17,7 +17,9 @@ const timers = {}
  * @returns {Object} - Timer object.
  */
 const start = (name, options = {}) => {
-  console.time(name)
+  if (config().consoleTime) {
+    console.time(name)
+  }
   const startTime = present()
   timers[name] = timers[name] || {
     entries: [],
@@ -41,7 +43,9 @@ const start = (name, options = {}) => {
  * @returns {Object} - Timer object.
  */
 const end = (name) => {
-  console.timeEnd(name)
+  if (config().consoleTime) {
+    console.timeEnd(name)
+  }
   const endTime = present()
   const item = timers[name]
   item.output = {}
@@ -67,8 +71,27 @@ const end = (name) => {
       item.output[plugin.name] = plugin.run(item)
     }
   }
-
   return item
+}
+
+// default plugin
+const mstimePluginUseLocalStorage = () => {
+  const mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'))
+  if (mstimeTimersObj) {
+    timers = mstimeTimersObj
+  }
+  return {
+    name: 'mstime-plugin-use-local-storage',
+    run: (timerData) => {
+      global.localStorage.setItem('mstime.timers', JSON.stringify(timers))
+      const lsData = global.localStorage.getItem('mstime.timers')
+      return {
+        createdAt: new Date().getTime(),
+        totalEntries: timerData.entries.length,
+        size: lsData.length,
+      }
+    },
+  }
 }
 
 export default {
@@ -77,4 +100,5 @@ export default {
   timers,
   start,
   end,
+  mstimePluginUseLocalStorage,
 }

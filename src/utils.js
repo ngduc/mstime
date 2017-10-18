@@ -3,6 +3,7 @@
  */
 let allConfig = {
   decimalDigits: 2,
+  consoleTime: false,
 }
 
 let allPlugins = []
@@ -22,7 +23,7 @@ export function config(updateConfig = {}) {
  * After setting plugin array, each plugin will be instantiated with config.
  * @param {Array} pluginArray - Array of plugins and their configs.
  * @returns {Array} - Array of all plugins.
- * @example mstime.plugins([ { plugin: mstimePluginPost, config: { url: '' } } ])
+ * @example mstime.plugins([ { plugin: mstimePluginUseLocalStorage, config: {} } ])
  * @example mstime.plugins() // return array of plugins.
  */
 export function plugins(pluginArray) {

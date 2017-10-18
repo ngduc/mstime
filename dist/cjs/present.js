@@ -1,8 +1,17 @@
 'use strict';
 
-var performance = global.performance || {};
+/* eslint-disable */
+var performance = window.performance || {};
 
 var present = function () {
+  // if NodeJS
+  if (typeof process !== 'undefined' && process.hrtime) {
+    return function () {
+      var time = process.hrtime();
+      return time[0] * 1e3 + time[1] / 1e6;
+    };
+  }
+
   var names = ['now', 'webkitNow', 'msNow', 'mozNow', 'oNow'];
   while (names.length) {
     var name = names.shift();

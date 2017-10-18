@@ -4,7 +4,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * Config object.
  */
 var allConfig = {
-  decimalDigits: 2
+  decimalDigits: 2,
+  consoleTime: false
 };
 
 var allPlugins = [];

@@ -1,6 +1,15 @@
-const performance = global.performance || {}
+/* eslint-disable */
+const performance = window.performance || {}
 
-const present = (function () {
+const present = (function() {
+  // if NodeJS
+  if (typeof process !== 'undefined' && process.hrtime) {
+    return function() {
+      const time = process.hrtime()
+      return time[0] * 1e3 + time[1] / 1e6
+    }
+  }
+
   const names = ['now', 'webkitNow', 'msNow', 'mozNow', 'oNow']
   while (names.length) {
     const name = names.shift()
@@ -11,20 +20,20 @@ const present = (function () {
 
   const dateNow =
     Date.now ||
-    function () {
+    function() {
       return new Date().getTime()
     }
   const navigationStart = (performance.timing || {}).navigationStart || dateNow()
-  return function () {
+  return function() {
     return dateNow() - navigationStart
   }
-}())
+})()
 
 present.performanceNow = performance.now
-present.noConflict = function () {
+present.noConflict = function() {
   performance.now = present.performanceNow
 }
-present.conflict = function () {
+present.conflict = function() {
   performance.now = present
 }
 present.conflict()
