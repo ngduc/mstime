@@ -35,6 +35,15 @@ describe('mstime', () => {
     expect(mstime.timers.block2.avg).toBeGreaterThan(0)
   })
 
+  it('clear a timer', () => {
+    mstime.start('clearTest')
+    dummyLoop()
+    mstime.end('clearTest')
+    expect(mstime.timers.clearTest.sum).toBeGreaterThan(0)
+    mstime.clear('clearTest')
+    expect(mstime.timers.clearTest).toBeUndefined()
+  })
+
   it('get config object', () => {
     mstime.config({ decimalDigits: 5 })
     const config = mstime.config()

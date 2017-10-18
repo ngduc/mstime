@@ -74,6 +74,14 @@ const end = (name) => {
   return item
 }
 
+/**
+ * Clear a timer.
+ * @param {string} name - Timer name to clear.
+ */
+const clear = (name) => {
+  delete timers[name]
+}
+
 // default plugin
 const mstimePluginUseLocalStorage = () => {
   const mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'))
@@ -100,5 +108,6 @@ export default {
   timers,
   start,
   end,
+  clear,
   mstimePluginUseLocalStorage,
 }

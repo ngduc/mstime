@@ -88,8 +88,27 @@ var end = function end(name) {
       item.output[plugin.name] = plugin.run(item);
     }
   }
-
   return item;
+};
+
+// default plugin
+var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
+  var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
+  if (mstimeTimersObj) {
+    timers = mstimeTimersObj;
+  }
+  return {
+    name: 'mstime-plugin-use-local-storage',
+    run: function run(timerData) {
+      global.localStorage.setItem('mstime.timers', JSON.stringify(timers));
+      var lsData = global.localStorage.getItem('mstime.timers');
+      return {
+        createdAt: new Date().getTime(),
+        totalEntries: timerData.entries.length,
+        size: lsData.length
+      };
+    }
+  };
 };
 
 var index = {
@@ -97,7 +116,8 @@ var index = {
   plugins: plugins,
   timers: timers,
   start: start,
-  end: end
+  end: end,
+  mstimePluginUseLocalStorage: mstimePluginUseLocalStorage
 };
 
 return index;
