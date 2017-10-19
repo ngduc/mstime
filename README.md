@@ -4,7 +4,15 @@
 [![Build Status](https://img.shields.io/travis/ngduc/mstime/master.svg?style=flat-square)](https://travis-ci.org/ngduc/mstime) [![Coverage Status](https://img.shields.io/codecov/c/github/ngduc/mstime/master.svg?style=flat-square)](https://codecov.io/gh/ngduc/mstime/branch/master)
 [![NPM](https://img.shields.io/npm/dt/mstime.svg?style=flat-square)](https://www.npmjs.com/package/mstime)
 
-a module to measure code performance in time (ms)
+a lightweight module to measure code performance in millisecond (ms), run on Node & browser.
+
+*mstime* uses `performance.now` (high resolution timestamp) to measure the difference between start & end points.
+
+*mstime* has a plugin system which lets you write simple (yet powerful) plugins to process/visualize captured data in different ways.
+
+## Example / Demo
+
+https://runkit.com/ngduc/mstime
 
 ## Install
 
@@ -35,9 +43,14 @@ const result = mstime.end('codeblock1')
 
 Available builds (dist): CommonJS, ES, UMD.
 
-## Example / Demo
+## Config
 
-https://runkit.com/ngduc/mstime
+```js
+mstime.config({
+  decimalDigits: 4,     // default: 2
+  consoleTime: true     // use console.time & console.timeEnd, default: false
+})
+```
 
 ## Plugin
 
@@ -58,6 +71,11 @@ const plugin = ({ config }) => ({
 })
 ```
 `run` function will get called on `mstime.end` and its result will be put in timerData.output
+
+### List of Plugins:
+
+* mstime-plugin-use-local-storage
+* (create your plugin & add it here)
 
 ## Dependencies
 

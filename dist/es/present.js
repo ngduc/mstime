@@ -1,6 +1,6 @@
 /* eslint-disable */
 // source: https://github.com/dbkaplun/present
-var performance = window.performance || {};
+var performance = global.performance || {};
 
 var present = function () {
   // if NodeJS

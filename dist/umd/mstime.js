@@ -101,7 +101,9 @@ var clear = function clear(name) {
   delete timers[name];
 };
 
-// default plugin
+/**
+ * Default plugin: use localStorage to store/load mstime.timers object.
+ */
 var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
   var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
   if (mstimeTimersObj) {

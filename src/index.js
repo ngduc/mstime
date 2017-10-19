@@ -84,7 +84,9 @@ const clear = (name) => {
   delete timers[name]
 }
 
-// default plugin
+/**
+ * Default plugin: use localStorage to store/load mstime.timers object.
+ */
 const mstimePluginUseLocalStorage = () => {
   const mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'))
   if (mstimeTimersObj) {

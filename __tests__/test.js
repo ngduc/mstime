@@ -10,7 +10,7 @@ describe('mstime', () => {
     }
   }
 
-  it('measure time', () => {
+  it('measures time', () => {
     mstime.start('block1')
     dummyLoop()
     const item = mstime.end('block1')
@@ -21,7 +21,7 @@ describe('mstime', () => {
     expect(entry.diff).not.toBeNull()
   })
 
-  it('measure time multiple times', () => {
+  it('measures time multiple times', () => {
     const LOOPS = 3
     for (let i = 0; i < LOOPS; i += 1) {
       mstime.start('block2')
@@ -34,7 +34,7 @@ describe('mstime', () => {
     expect(mstime.timers.block2.avg).toBeGreaterThan(0)
   })
 
-  it('clear a timer', () => {
+  it('clears a timer', () => {
     mstime.start('clearTest')
     dummyLoop()
     mstime.end('clearTest')
@@ -43,13 +43,13 @@ describe('mstime', () => {
     expect(mstime.timers.clearTest).toBeUndefined()
   })
 
-  it('get config object', () => {
+  it('gets config object', () => {
     mstime.config({ decimalDigits: 5 })
     const config = mstime.config()
     expect(config.decimalDigits).toBe(5)
   })
 
-  it('update config with mstime.config', () => {
+  it('updates config with mstime.config', () => {
     let decialPointIdx = -1
     mstime.start('block3')
     dummyLoop()
@@ -64,7 +64,7 @@ describe('mstime', () => {
     expect(decialPointIdx).toBe(-1)
   })
 
-  it('attach data object', () => {
+  it('attachs data object', () => {
     mstime.start('block4', { data: { moreData: 123 } })
     dummyLoop()
     mstime.end('block4')
@@ -73,7 +73,7 @@ describe('mstime', () => {
     expect(entry.data.moreData).toBe(123)
   })
 
-  it('set plugins & plugins get instantiated with configs', () => {
+  it('sets plugins & plugins get instantiated with configs', () => {
     let pluginInit1 = 0
     let pluginInit2 = 0
     const dummyPlugin1 = ({ config }) => {
