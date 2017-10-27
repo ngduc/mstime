@@ -67,7 +67,6 @@ describe('mstime', () => {
   it('attachs data object', () => {
     mstime.start('block4', { data: { moreData: 123 } })
     dummyLoop()
-    mstime.end('block4')
     const item = mstime.end('block4')
     const entry = item.entries[item.entries.length - 1]
     expect(entry.data.moreData).toBe(123)

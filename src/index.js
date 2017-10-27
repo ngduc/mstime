@@ -10,6 +10,7 @@ const {
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
 let timers = {}
+let configRef = {} // reference of config()
 
 /**
  * Start a timer to measure code performance.
@@ -19,10 +20,11 @@ let timers = {}
  * @returns {Object} - Timer object.
  */
 const start = (name, options = {}) => {
-  if (config().consoleTime) {
+  const startTime = present() // should be the very first operation!
+  configRef = config()
+  if (configRef.consoleTime) {
     console.time(name)
   }
-  const startTime = present()
   timers[name] = timers[name] || {
     entries: [],
     // last: 0, // calculate for these later. (on end())
@@ -30,6 +32,7 @@ const start = (name, options = {}) => {
     // avg: 0,
   }
   const entry = {
+    timestamp: +new Date(),
     start: format(startTime),
   }
   if (options.data) {
@@ -45,7 +48,7 @@ const start = (name, options = {}) => {
  * @returns {Object} - Timer object.
  */
 const end = (name) => {
-  if (config().consoleTime) {
+  if (configRef.consoleTime) {
     console.timeEnd(name)
   }
   const endTime = present()
@@ -85,7 +88,7 @@ const clear = (name) => {
 }
 
 /**
- * Default plugin: use localStorage to store/load mstime.timers object.
+ * Plugin: use localStorage to store/load mstime.timers object.
  */
 const mstimePluginUseLocalStorage = () => {
   const mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'))

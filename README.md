@@ -6,13 +6,14 @@
 
 a lightweight module to measure code performance in millisecond (ms), run on Node & browser.
 
-*mstime* uses `performance.now` (high resolution timestamp) to measure the difference between start & end points.
+*mstime* uses [performance.now Web API](https://developers.google.com/web/updates/2012/08/When-milliseconds-are-not-enough-performance-now) (high resolution timer) to measure the difference between start & end points.
 
 *mstime* has a plugin system which lets you write simple (yet powerful) plugins to process/visualize captured data in different ways.
 
 ## Example / Demo
 
-https://runkit.com/ngduc/mstime
+* Example in Node: https://runkit.com/ngduc/mstime
+* Example in Browser: https://rawgit.com/ngduc/mstime/master/docs/demo/index.html
 
 ## Install
 

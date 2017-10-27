@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title></title>
+  <title>mstime - Example</title>
   <link rel="stylesheet" type="text/css" href="">
   <style></style>
 
@@ -30,7 +30,7 @@
         return;
       }
       mstime.config({
-        consoleTime: true // enable: console.time()
+        consoleTime: true, // enable: console.time()
       })
       mstime.plugins([{
         plugin: mstime.mstimePluginUseLocalStorage, config: {}
@@ -45,6 +45,10 @@
       console.log('mstime: ', mstime.end('timer1'));
     });
   </script>
+  <p>
+    Example of using mstime in browser.
+    <p/>(Open Web Inspector to see console logs - shortcut: Cmd + Opt + J)
+  </p>
 </body>
 
 </html>
