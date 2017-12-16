@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 
 const present = require('./present')
-const {
-  config, plugins, format, sumArray,
-} = require('./utils')
+const { config, plugins, format } = require('./utils')
 
 /**
  * Map of timers.
@@ -48,24 +46,22 @@ const start = (name, options = {}) => {
  * @returns {Object} - Timer object.
  */
 const end = (name) => {
+  const endTime = present() // should be the very first operation!
   if (configRef.consoleTime) {
     console.timeEnd(name)
   }
-  const endTime = present()
-  const item = timers[name]
-  item.output = {}
+  const timer = timers[name]
+  timer.output = {}
 
-  const { entries } = item
+  const { entries } = timer
   const lastEntry = entries[entries.length - 1]
   lastEntry.end = format(endTime)
   lastEntry.diff = format(lastEntry.end - lastEntry.start)
 
   // calculate for more useful values
-  item.last = lastEntry.diff
-
-  const diffArr = entries.map(e => e.diff)
-  item.sum = format(sumArray(diffArr))
-  item.avg = format(item.sum / entries.length)
+  timer.last = lastEntry.diff
+  timer.sum = format((timer.sum || 0) + lastEntry.diff)
+  timer.avg = format(timer.sum / entries.length)
 
   // run every Plugin & keep their outputs in "output {}"
   const allPlugins = plugins()
@@ -73,10 +69,10 @@ const end = (name) => {
     const pluginObject = allPlugins[i]
     const { plugin } = pluginObject
     if (plugin && plugin.run) {
-      item.output[plugin.name] = plugin.run(item)
+      timer.output[plugin.name] = plugin.run(timer)
     }
   }
-  return item
+  return timer
 }
 
 /**
