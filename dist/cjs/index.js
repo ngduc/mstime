@@ -105,7 +105,7 @@ var clear = function clear(name) {
 var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
   var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
   if (mstimeTimersObj) {
-    timers = mstimeTimersObj;
+    timers = mstimeTimersObj; // set "timers" data (loaded from localStorage)
   }
   return {
     name: 'mstime-plugin-use-local-storage',
@@ -120,42 +120,6 @@ var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
     }
   };
 };
-
-// Usage: mstime.plugins([ { plugin: mstimePluginTrimMean, config: { percent: 0.2 } } ])
-//     (trim 20% (top: 10%, bottom: 10%) of entries, then calculate for average.
-// Explanation of TRIMMEAN - similar to an Excel function:
-// https://support.office.com/en-us/article/trimmean-function-d90c9878-a119-4746-88fa-63d988f511d3
-// const mstimePluginTrimMean = ({ config: pluginConfig = {} }) => {
-//   return {
-//     name: 'mstime-plugin-trim-mean',
-//     run: (allData, timerData) => {
-//       const percent = typeof pluginConfig.percent !== 'undefined' ? pluginConfig.percent : 0.2; // default to 20%
-//       const includeItems = typeof pluginConfig.includeItems !== 'undefined' ?
-// pluginConfig.includeItems : false; // default to false
-
-//       const sortedArr = timerData.entries.sort((a, b) => a.diff - b.diff); // sort smaller > larger
-
-//       const l = sortedArr.length;
-//       const low = Math.round(l * percent);
-//       const high = l - low;
-//       const finalArr = sortedArr.slice(low, high);
-//       let sum = 0;
-//       finalArr.map(e => {
-//         sum += e.diff;
-//         return e;
-//       });
-//       const output = {
-//         percent,
-//         sum: format(sum),
-//         mean: format(sum / finalArr.length)
-//       };
-//       if (includeItems) {
-//         output.items = finalArr;
-//       }
-//       return output;
-//     }
-//   };
-// };
 
 exports.default = {
   config: config,
