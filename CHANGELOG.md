@@ -1,4 +1,4 @@
-## [0.4.0] - 2018-10-04
+## [0.4.2] - 2018-10-04
 
 ### Added
 - add mstimePluginChartist - plot data using Chartist.

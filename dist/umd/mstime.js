@@ -82,6 +82,7 @@ var end = function end(name) {
   timer.avg = timer.sum / entries.length;
 
   // --- stop calculating from this point => format data: (formatting will affect any calculation)
+  timer.name = name;
   lastEntry.avg = timer.avg; // keep current avg in each entry
   timer.last = format(timer.last);
   lastEntry.start = format(lastEntry.start);

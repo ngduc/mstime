@@ -10,7 +10,10 @@ export default function mstimePluginChartist({ config = {} }) {
   return {
     name: 'mstime-plugin-chartist',
     run: (allData, timerData) => {
-      const container = typeof config.container !== 'undefined' ? config.container : '.ct-chart'; // default .ct-chart
+      if (!Chartist) {
+        return {};
+      }
+      const idAttr = config.idAttr || 'data-mstime-id';
 
       const data = {
         // A labels array that can contain any sort of values
@@ -27,16 +30,17 @@ export default function mstimePluginChartist({ config = {} }) {
           }
         ]
       };
-      if (!Chartist) {
+      const queryStr = `[${idAttr}="${timerData.name}"]`;
+      if (window && !window.TEST_ENV && document.querySelectorAll(queryStr).length === 0) {
         return {};
       }
-      new Chartist.Line(container, data, {
+      new Chartist.Line(queryStr, data, {
         series: {
           avg: { showPoint: false }
         }
       });
       return {
-        container
+        idAttr
       };
     }
   };

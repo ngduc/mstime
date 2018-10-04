@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import mstime from '../src';
 
+window.TEST_ENV = true;
+
 describe('mstime', () => {
   // helper
   const dummyLoop = () => {
@@ -137,6 +139,15 @@ describe('mstime', () => {
     mstime.start('block60');
     dummyLoop();
     const item = mstime.end('block60');
-    expect(mstime.timers.block60.plugins['mstime-plugin-chartist'].container).toBe('.ct-chart'); // default
+    expect(mstime.timers.block60.plugins['mstime-plugin-chartist'].idAttr).toBe('data-mstime-id'); // default
+  });
+
+  it('mstimePluginChartist set config', () => {
+    window.Chartist = { Line: () => {} }; // mock Chartist
+    mstime.plugins([{ plugin: mstime.mstimePluginChartist, config: { idAttr: 'data-chart-id' } }]);
+    mstime.start('block61');
+    dummyLoop();
+    const item = mstime.end('block61');
+    expect(mstime.timers.block61.plugins['mstime-plugin-chartist'].idAttr).toBe('data-chart-id');
   });
 });

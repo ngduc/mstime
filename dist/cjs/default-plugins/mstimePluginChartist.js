@@ -19,7 +19,10 @@ function mstimePluginChartist(_ref) {
   return {
     name: 'mstime-plugin-chartist',
     run: function run(allData, timerData) {
-      var container = typeof config.container !== 'undefined' ? config.container : '.ct-chart'; // default .ct-chart
+      if (!Chartist) {
+        return {};
+      }
+      var idAttr = config.idAttr || 'data-mstime-id';
 
       var data = {
         // A labels array that can contain any sort of values
@@ -39,16 +42,17 @@ function mstimePluginChartist(_ref) {
           })
         }]
       };
-      if (!Chartist) {
+      var queryStr = '[' + idAttr + '="' + timerData.name + '"]';
+      if (window && !window.TEST_ENV && document.querySelectorAll(queryStr).length === 0) {
         return {};
       }
-      new Chartist.Line(container, data, {
+      new Chartist.Line(queryStr, data, {
         series: {
           avg: { showPoint: false }
         }
       });
       return {
-        container: container
+        idAttr: idAttr
       };
     }
   };

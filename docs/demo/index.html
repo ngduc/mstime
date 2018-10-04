@@ -20,7 +20,8 @@
   <div id="mydiv" class=""></div>
 
   <!-- Chartist Container -->
-  <div class="my-chart"></div>
+  <div class="my-chart" data-mstime-id="timer1"></div>
+  <div class="my-chart" data-mstime-id="timer2"></div>
 
   <script type="text/javascript">
     var global = window; // for "present" module.
@@ -45,20 +46,22 @@
       }, {
         plugin: mstime.mstimePluginTrimMean
       }, {
-        plugin: mstime.mstimePluginChartist, config: { container: '.my-chart' }
+        plugin: mstime.mstimePluginChartist
       }])
 
       window.clear = () => {
         mstime.clear('timer1');
+        mstime.clear('timer2');
       }
 
       window.exec = () => {
         mstime.start('timer1');
-        var t1 = (new Date()).getTime()
         dummyLoop()
-        var t2 = (new Date()).getTime()
-        console.log('date.getTime diff: ', t2 - t1, 'ms');
-        console.log('mstime: ', mstime.end('timer1'));
+        console.log('timer1 - data: ', mstime.end('timer1'));
+
+        mstime.start('timer2');
+        dummyLoop()
+        mstime.end('timer2')
       }
       window.exec();
     });
