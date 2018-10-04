@@ -15,6 +15,8 @@ _mstime_ has a plugin system which lets you write simple (yet powerful) plugins 
 * Example in Node: https://runkit.com/ngduc/mstime
 * Example in Browser: https://rawgit.com/ngduc/mstime/master/docs/demo/index.html
 
+![Demo Screenshot](/docs/screenshot-01.png)
+
 ## Install
 
     $ npm install --save mstime
@@ -74,10 +76,12 @@ const plugin = ({ config }) => ({
 `run` function will get called on `mstime.end` and its result will be put in timerData.output
 
 ### List of Plugins:
-
-* mstime-plugin-use-local-storage
-* mstime-plugin-trim-mean
-* (create your plugin & add it here...)
+```
+- mstime-plugin-use-local-storage   use localStorage to store timer data. 
+- mstime-plugin-trim-mean           calculate for trimmed mean.
+- mstime-plugin-chartist            plot data using Chartist.
+- (create your plugin & add it here...)
+```
 
 ## Dependencies
 

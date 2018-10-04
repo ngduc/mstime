@@ -11,6 +11,7 @@
     "flowtype-errors/show-errors": 2,
     "arrow-body-style": 0,
     "max-len": [2, 120],
+    "no-new": 0,
     // JSDoc
     "jsdoc/check-param-names": 1,
     "jsdoc/check-tag-names": 1,

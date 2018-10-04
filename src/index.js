@@ -3,6 +3,7 @@
 const present = require('./present');
 const { config, plugins, format } = require('./utils');
 const mstimePluginTrimMean = require('./default-plugins/mstimePluginTrimMean');
+const mstimePluginChartist = require('./default-plugins/mstimePluginChartist');
 
 /**
  * Map of timers.
@@ -32,7 +33,7 @@ const start = (name, options = {}) => {
   };
   const entry = {
     timestamp: +new Date(),
-    start: format(startTime)
+    start: startTime
   };
   if (options.data) {
     entry.data = options.data;
@@ -59,13 +60,22 @@ const end = name => {
 
   const { entries } = timer;
   const lastEntry = entries[entries.length - 1];
-  lastEntry.end = format(endTime);
-  lastEntry.diff = format(lastEntry.end - lastEntry.start);
+  lastEntry.diff = endTime - lastEntry.start;
 
   // calculate for more useful values
   timer.last = lastEntry.diff;
-  timer.sum = format((timer.sum || 0) + lastEntry.diff);
-  timer.avg = format(timer.sum / entries.length);
+  timer.sum = (timer.sum || 0) + lastEntry.diff;
+  timer.avg = timer.sum / entries.length;
+
+  // --- stop calculating from this point => format data: (formatting will affect any calculation)
+  lastEntry.avg = timer.avg; // keep current avg in each entry
+  timer.last = format(timer.last);
+  lastEntry.start = format(lastEntry.start);
+  lastEntry.end = format(endTime);
+  lastEntry.diff = format(lastEntry.diff);
+
+  timer.sum = format(timer.sum);
+  timer.avg = format(timer.avg);
 
   // run every Plugin & keep their plugins in "plugins {}"
   const allPlugins = plugins();
@@ -85,6 +95,16 @@ const end = name => {
  */
 const clear = name => {
   delete timers[name];
+
+  // call plugin.clear() - if any:
+  const allPlugins = plugins();
+  for (let i = 0; i < allPlugins.length; i += 1) {
+    const pluginObject = allPlugins[i];
+    const { plugin } = pluginObject;
+    if (plugin && plugin.clear) {
+      plugin.clear();
+    }
+  }
 };
 
 /**
@@ -105,6 +125,10 @@ const mstimePluginUseLocalStorage = () => {
         totalEntries: timerData.entries.length,
         size: lsData.length
       };
+    },
+    clear: () => {
+      // assume timers got cleared before this function gets called => save to storage:
+      global.localStorage.setItem('mstime.timers', JSON.stringify(timers));
     }
   };
 };
@@ -117,5 +141,6 @@ export default {
   end,
   clear,
   mstimePluginUseLocalStorage,
-  mstimePluginTrimMean
+  mstimePluginTrimMean,
+  mstimePluginChartist
 };

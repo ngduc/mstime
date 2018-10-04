@@ -4,7 +4,11 @@
 <head>
   <title>mstime - Example</title>
   <link rel="stylesheet" type="text/css" href="">
-  <style></style>
+
+  <!-- Chartist Dependencies: CSS, JS - required for "mstime.mstimePluginChartist" -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  <style>.my-chart { width: 50vw; height: 30vh; }</style>
 
   <script>
     // https://github.com/Stuk/require1k/blob/master/require1k.min.js
@@ -14,6 +18,9 @@
 
 <body>
   <div id="mydiv" class=""></div>
+
+  <!-- Chartist Container -->
+  <div class="my-chart"></div>
 
   <script type="text/javascript">
     var global = window; // for "present" module.
@@ -32,24 +39,37 @@
       mstime.config({
         consoleTime: true, // enable: console.time()
       })
+
       mstime.plugins([{
         plugin: mstime.mstimePluginUseLocalStorage
       }, {
         plugin: mstime.mstimePluginTrimMean
+      }, {
+        plugin: mstime.mstimePluginChartist, config: { container: '.my-chart' }
       }])
 
-      mstime.start('timer1');
-      var t1 = (new Date()).getTime()
-      dummyLoop()
-      var t2 = (new Date()).getTime()
-      console.log('date.getTime diff: ', t2 - t1, 'ms');
+      window.clear = () => {
+        mstime.clear('timer1');
+      }
 
-      console.log('mstime: ', mstime.end('timer1'));
+      window.exec = () => {
+        mstime.start('timer1');
+        var t1 = (new Date()).getTime()
+        dummyLoop()
+        var t2 = (new Date()).getTime()
+        console.log('date.getTime diff: ', t2 - t1, 'ms');
+        console.log('mstime: ', mstime.end('timer1'));
+      }
+      window.exec();
     });
   </script>
   <p>
-    Example of using mstime in browser.
-    <p />(Open Web Inspector to see console logs - shortcut: Cmd + Opt + J)
+    Example: Execution Time of a dummy for-loop.
+    <p />(Open Web Inspector to see console logs)
+    <div>
+      <button onclick="javascript: window.clear(); window.exec()">Clear Data</button>
+      <button onclick="javascript: window.exec()">Refresh Page (Graph)</button>
+    </div>
   </p>
 </body>
 

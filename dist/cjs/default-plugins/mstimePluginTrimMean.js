@@ -22,9 +22,10 @@ function mstimePluginTrimMean(_ref) {
       var percent = typeof config.percent !== 'undefined' ? config.percent : 0.2; // default to 20%
       var includeItems = typeof config.includeItems !== 'undefined' ? config.includeItems : false; // default to false
 
-      var sortedArr = timerData.entries.sort(function (a, b) {
+      // clone (otherwise, it'll mutate original data) & sort smaller > larger
+      var sortedArr = timerData.entries.slice().sort(function (a, b) {
         return a.diff - b.diff;
-      }); // sort smaller > larger
+      });
 
       var l = sortedArr.length;
       var low = Math.round(l * percent);
@@ -35,8 +36,6 @@ function mstimePluginTrimMean(_ref) {
         sum += e.diff;
         return e;
       });
-      // let sum = 0;
-      // timerData.entries.map(entry => (sum += entry.diff));
       var output = {
         percent: percent,
         totalEntries: finalArr.length,
@@ -50,4 +49,4 @@ function mstimePluginTrimMean(_ref) {
     }
   };
 }
-module.exports = exports['default'];
+module.exports = exports.default;

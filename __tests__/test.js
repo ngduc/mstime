@@ -60,8 +60,8 @@ describe('mstime', () => {
     mstime.config({ decimalDigits: 0, consoleTime: true });
     mstime.start('block3');
     mstime.end('block3');
-    decialPointIdx = mstime.timers.block3.last.toString().indexOf('.');
-    expect(decialPointIdx).toBe(-1);
+    decialPointIdx = mstime.timers.block3.last.toString().indexOf('.'); // find decimal point
+    expect(decialPointIdx).toBe(-1); // it should not exist (because decimalDigits = 0)
   });
 
   it('attachs data object', () => {
@@ -129,5 +129,14 @@ describe('mstime', () => {
     dummyLoop();
     const item = mstime.end('block55');
     expect(mstime.timers.block55.plugins['mstime-plugin-trim-mean'].percent).toBe(0.2); // default 20%
+  });
+
+  it('mstimePluginChartist default config', () => {
+    window.Chartist = { Line: () => {} }; // mock Chartist
+    mstime.plugins([{ plugin: mstime.mstimePluginChartist }]);
+    mstime.start('block60');
+    dummyLoop();
+    const item = mstime.end('block60');
+    expect(mstime.timers.block60.plugins['mstime-plugin-chartist'].container).toBe('.ct-chart'); // default
   });
 });
