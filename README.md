@@ -8,7 +8,7 @@ a lightweight module to measure code performance in millisecond (ms), run on Nod
 
 _mstime_ uses [performance.now Web API](https://developers.google.com/web/updates/2012/08/When-milliseconds-are-not-enough-performance-now) (high resolution timer) to measure the difference between start & end points.
 
-_mstime_ has a plugin system which lets you write simple (yet powerful) plugins to process/visualize captured data in different ways.
+_mstime_ has an easy **Plugin System** which lets you write simple (yet powerful) plugins to process/visualize data in different ways.
 
 ## Example / Demo
 
@@ -65,7 +65,7 @@ A plugin is just a function that processes data and returns this structure:
 const plugin = ({ config }) => ({
   name: "mstime-plugin-example",
   run: (allData, timerData) => {
-    const output = "do something useful here with timerData...";
+    const output = "do something useful here with allData & timerData...";
     return {
       // property & value can be anything
     };
@@ -73,7 +73,7 @@ const plugin = ({ config }) => ({
 });
 ```
 
-`run` function will get called on `mstime.end` and its result will be put in timerData.output
+`run` function will get called on `mstime.end` and its result will be put in "timerData.plugins"
 
 ### List of Plugins:
 ```
@@ -83,7 +83,9 @@ const plugin = ({ config }) => ({
 - (create your plugin & add it here...)
 ```
 
-## Dependencies
+## Documentation
+
+- [Change Log](/CHANGELOG.md)
 
 ## License
 
