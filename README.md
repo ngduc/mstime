@@ -15,7 +15,7 @@ _mstime_ has an easy **Plugin System** which lets you write simple (yet powerful
 * Example in Node: https://runkit.com/ngduc/mstime
 * Example in Browser: https://rawgit.com/ngduc/mstime/master/docs/demo/index.html
 
-![Demo Screenshot](/docs/screenshot-01.png)
+[![Demo Screenshot](/docs/screenshot-01.png)](https://rawgit.com/ngduc/mstime/master/docs/demo/index.html)
 
 ## Install
 
