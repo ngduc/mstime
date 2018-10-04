@@ -25,7 +25,8 @@ export default function mstimePluginTrimMean({ config = {} }) {
       // let sum = 0;
       // timerData.entries.map(entry => (sum += entry.diff));
       const output = {
-        percent: config.percent,
+        percent,
+        totalEntries: finalArr.length,
         sum: format(sum),
         mean: format(sum / finalArr.length)
       };

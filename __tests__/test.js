@@ -121,6 +121,13 @@ describe('mstime', () => {
     expect(mstime.timers.block50.plugins['mstime-plugin-trim-mean']).not.toBeNull();
     expect(mstime.timers.block50.plugins['mstime-plugin-trim-mean'].percent).toBe(0.1);
     expect(mstime.timers.block50.plugins['mstime-plugin-trim-mean'].mean).toBeGreaterThan(0);
-    console.log(mstime.timers.block50.plugins['mstime-plugin-trim-mean']);
+  });
+
+  it('mstimePluginTrimMean default config', () => {
+    mstime.plugins([{ plugin: mstime.mstimePluginTrimMean }]);
+    mstime.start('block55');
+    dummyLoop();
+    const item = mstime.end('block55');
+    expect(mstime.timers.block55.plugins['mstime-plugin-trim-mean'].percent).toBe(0.2); // default 20%
   });
 });

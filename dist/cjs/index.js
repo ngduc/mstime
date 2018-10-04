@@ -9,14 +9,13 @@ var _require = require('./utils'),
     config = _require.config,
     plugins = _require.plugins,
     format = _require.format;
-// const mstimePluginTrimMean = require('./default-plugins/mstimePluginTrimMean');
+
+var mstimePluginTrimMean = require('./default-plugins/mstimePluginTrimMean');
 
 /**
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
-
-
 var timers = {};
 var configRef = {}; // reference of config()
 
@@ -110,7 +109,7 @@ var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
   }
   return {
     name: 'mstime-plugin-use-local-storage',
-    run: function run(timerData) {
+    run: function run(allData, timerData) {
       global.localStorage.setItem('mstime.timers', JSON.stringify(timers));
       var lsData = global.localStorage.getItem('mstime.timers');
       return {
@@ -126,41 +125,37 @@ var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
 //     (trim 20% (top: 10%, bottom: 10%) of entries, then calculate for average.
 // Explanation of TRIMMEAN - similar to an Excel function:
 // https://support.office.com/en-us/article/trimmean-function-d90c9878-a119-4746-88fa-63d988f511d3
-var mstimePluginTrimMean = function mstimePluginTrimMean(_ref) {
-  var _ref$config = _ref.config,
-      pluginConfig = _ref$config === undefined ? {} : _ref$config;
+// const mstimePluginTrimMean = ({ config: pluginConfig = {} }) => {
+//   return {
+//     name: 'mstime-plugin-trim-mean',
+//     run: (allData, timerData) => {
+//       const percent = typeof pluginConfig.percent !== 'undefined' ? pluginConfig.percent : 0.2; // default to 20%
+//       const includeItems = typeof pluginConfig.includeItems !== 'undefined' ?
+// pluginConfig.includeItems : false; // default to false
 
-  return {
-    name: 'mstime-plugin-trim-mean',
-    run: function run(allData, timerData) {
-      var percent = typeof pluginConfig.percent !== 'undefined' ? pluginConfig.percent : 0.2; // default to 20%
-      var includeItems = typeof pluginConfig.includeItems !== 'undefined' ? pluginConfig.includeItems : false; // default to false
+//       const sortedArr = timerData.entries.sort((a, b) => a.diff - b.diff); // sort smaller > larger
 
-      var sortedArr = timerData.entries.sort(function (a, b) {
-        return a.diff - b.diff;
-      }); // sort smaller > larger
-
-      var l = sortedArr.length;
-      var low = Math.round(l * percent);
-      var high = l - low;
-      var finalArr = sortedArr.slice(low, high);
-      var sum = 0;
-      finalArr.map(function (e) {
-        sum += e.diff;
-        return e;
-      });
-      var output = {
-        percent: pluginConfig.percent,
-        sum: format(sum),
-        mean: format(sum / finalArr.length)
-      };
-      if (includeItems) {
-        output.items = finalArr;
-      }
-      return output;
-    }
-  };
-};
+//       const l = sortedArr.length;
+//       const low = Math.round(l * percent);
+//       const high = l - low;
+//       const finalArr = sortedArr.slice(low, high);
+//       let sum = 0;
+//       finalArr.map(e => {
+//         sum += e.diff;
+//         return e;
+//       });
+//       const output = {
+//         percent,
+//         sum: format(sum),
+//         mean: format(sum / finalArr.length)
+//       };
+//       if (includeItems) {
+//         output.items = finalArr;
+//       }
+//       return output;
+//     }
+//   };
+// };
 
 exports.default = {
   config: config,

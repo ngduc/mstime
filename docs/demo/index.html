@@ -33,7 +33,9 @@
         consoleTime: true, // enable: console.time()
       })
       mstime.plugins([{
-        plugin: mstime.mstimePluginUseLocalStorage, config: {}
+        plugin: mstime.mstimePluginUseLocalStorage
+      }, {
+        plugin: mstime.mstimePluginTrimMean
       }])
 
       mstime.start('timer1');
@@ -47,7 +49,7 @@
   </script>
   <p>
     Example of using mstime in browser.
-    <p/>(Open Web Inspector to see console logs - shortcut: Cmd + Opt + J)
+    <p />(Open Web Inspector to see console logs - shortcut: Cmd + Opt + J)
   </p>
 </body>
 
