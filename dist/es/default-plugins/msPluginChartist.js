@@ -2,35 +2,43 @@
 
 // Usage: mstime.plugins([ { plugin: mstimePluginChartist, config: { container: '' } } ])
 //    Plot data using Chartist - http://gionkunz.github.io/chartist-js
-export default function mstimePluginChartist({ config = {} }) {
+export default function msPluginChartist(_ref) {
+  var _ref$config = _ref.config,
+      config = _ref$config === undefined ? {} : _ref$config;
+
   // if (typeof Chartist !== 'undefined') {
   //   console.error('Chartist is not available - see: http://gionkunz.github.io/chartist-js');
   // }
-  const { Chartist } = window;
+  var _window = window,
+      Chartist = _window.Chartist;
+
   return {
-    name: 'mstime-plugin-chartist',
-    run: (allData, timerData) => {
+    name: 'msplugin-chartist',
+    run: function run(allData, timerData) {
       if (!Chartist) {
         return {};
       }
-      const idAttr = config.idAttr || 'data-mstime-id';
+      var idAttr = config.idAttr || 'data-mstime-id';
 
-      const data = {
+      var data = {
         // A labels array that can contain any sort of values
-        labels: timerData.entries.map((d, idx) => idx),
+        labels: timerData.entries.map(function (d, idx) {
+          return idx;
+        }),
         // Our series array that contains series objects or in this case series data arrays
-        series: [
-          {
-            name: 'avg',
-            data: timerData.entries.map(d => timerData.avg)
-          },
-          {
-            name: 'time',
-            data: timerData.entries.map(d => d.diff)
-          }
-        ]
+        series: [{
+          name: 'avg',
+          data: timerData.entries.map(function (d) {
+            return timerData.avg;
+          })
+        }, {
+          name: 'time',
+          data: timerData.entries.map(function (d) {
+            return d.diff;
+          })
+        }]
       };
-      const queryStr = `[${idAttr}="${timerData.name}"]`;
+      var queryStr = '[' + idAttr + '="' + timerData.name + '"]';
       if (window && !window.TEST_ENV && document.querySelectorAll(queryStr).length === 0) {
         return {};
       }
@@ -40,7 +48,7 @@ export default function mstimePluginChartist({ config = {} }) {
         }
       });
       return {
-        idAttr
+        idAttr: idAttr
       };
     }
   };

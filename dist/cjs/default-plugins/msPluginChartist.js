@@ -1,8 +1,12 @@
+'use strict';
+
+exports.__esModule = true;
+exports.default = msPluginChartist;
 // const { format } = require('../utils');
 
 // Usage: mstime.plugins([ { plugin: mstimePluginChartist, config: { container: '' } } ])
 //    Plot data using Chartist - http://gionkunz.github.io/chartist-js
-export default function mstimePluginChartist(_ref) {
+function msPluginChartist(_ref) {
   var _ref$config = _ref.config,
       config = _ref$config === undefined ? {} : _ref$config;
 
@@ -13,7 +17,7 @@ export default function mstimePluginChartist(_ref) {
       Chartist = _window.Chartist;
 
   return {
-    name: 'mstime-plugin-chartist',
+    name: 'msplugin-chartist',
     run: function run(allData, timerData) {
       if (!Chartist) {
         return {};
@@ -53,3 +57,4 @@ export default function mstimePluginChartist(_ref) {
     }
   };
 }
+module.exports = exports.default;

@@ -1,12 +1,12 @@
 const { format } = require('../utils');
 
-// Usage: mstime.plugins([ { plugin: mstimePluginTrimMean, config: { percent: 0.2 } } ])
+// Usage: mstime.plugins([ { plugin: msPluginTrimMean, config: { percent: 0.2 } } ])
 //     (trim 20% (top: 10%, bottom: 10%) of entries, then calculate for average.
 // Explanation of TRIMMEAN - similar to an Excel function:
 // https://support.office.com/en-us/article/trimmean-function-d90c9878-a119-4746-88fa-63d988f511d3
-export default function mstimePluginTrimMean({ config = {} }) {
+export default function msPluginTrimMean({ config = {} }) {
   return {
-    name: 'mstime-plugin-trim-mean',
+    name: 'msplugin-trim-mean',
     run: (allData, timerData) => {
       const percent = typeof config.percent !== 'undefined' ? config.percent : 0.2; // default to 20%
       const includeItems = typeof config.includeItems !== 'undefined' ? config.includeItems : false; // default to false

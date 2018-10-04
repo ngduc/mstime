@@ -62,8 +62,8 @@ Plugins offer more useful abilities on the captured data.
 A plugin is just a function that processes data and returns this structure:
 
 ```js
-const plugin = ({ config }) => ({
-  name: "mstime-plugin-example",
+const pluginExample = ({ config }) => ({
+  name: "msplugin-example",
   run: (allData, timerData) => {
     const output = "do something useful here with allData & timerData...";
     return {
@@ -77,9 +77,10 @@ const plugin = ({ config }) => ({
 
 ### List of Plugins:
 ```
-- mstime-plugin-use-local-storage   use localStorage to store timer data. 
-- mstime-plugin-trim-mean           calculate for trimmed mean.
-- mstime-plugin-chartist            plot data using Chartist.
+- msplugin-use-local-storage   use localStorage to store timer data. 
+- msplugin-trim-mean           calculate for trimmed mean.
+- msplugin-chartist            plot data using Chartist.
+- msplugin-find-outliers       (TODO)
 - (create your plugin & add it here...)
 ```
 

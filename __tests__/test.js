@@ -95,7 +95,7 @@ describe('mstime', () => {
   it('has plugin to process timers & set to output', () => {
     const pluginInit1 = 0;
     const dummyPlugin1 = ({ config }) => ({
-      name: 'mstime-plugin-dummy',
+      name: 'msplugin-dummy',
       run: (allData, timerData) => {
         const output = 'do something useful here...';
         return {
@@ -109,45 +109,45 @@ describe('mstime', () => {
     mstime.start('block5');
     dummyLoop();
     mstime.end('block5');
-    expect(mstime.timers.block5.plugins['mstime-plugin-dummy'].totalEntries).toBe(1);
+    expect(mstime.timers.block5.plugins['msplugin-dummy'].totalEntries).toBe(1);
   });
 
-  it('mstimePluginTrimMean should work & return a mean value', () => {
-    mstime.plugins([{ plugin: mstime.mstimePluginTrimMean, config: { percent: 0.1 } }]);
+  it('msPluginTrimMean should work & return a mean value', () => {
+    mstime.plugins([{ plugin: mstime.msPluginTrimMean, config: { percent: 0.1 } }]);
     const LOOPS = 10;
     for (let i = 0; i < LOOPS; i += 1) {
       mstime.start('block50');
       dummyLoop();
       const item = mstime.end('block50');
     }
-    expect(mstime.timers.block50.plugins['mstime-plugin-trim-mean']).not.toBeNull();
-    expect(mstime.timers.block50.plugins['mstime-plugin-trim-mean'].percent).toBe(0.1);
-    expect(mstime.timers.block50.plugins['mstime-plugin-trim-mean'].mean).toBeGreaterThan(0);
+    expect(mstime.timers.block50.plugins['msplugin-trim-mean']).not.toBeNull();
+    expect(mstime.timers.block50.plugins['msplugin-trim-mean'].percent).toBe(0.1);
+    expect(mstime.timers.block50.plugins['msplugin-trim-mean'].mean).toBeGreaterThan(0);
   });
 
-  it('mstimePluginTrimMean default config', () => {
-    mstime.plugins([{ plugin: mstime.mstimePluginTrimMean }]);
+  it('msPluginTrimMean default config', () => {
+    mstime.plugins([{ plugin: mstime.msPluginTrimMean }]);
     mstime.start('block55');
     dummyLoop();
     const item = mstime.end('block55');
-    expect(mstime.timers.block55.plugins['mstime-plugin-trim-mean'].percent).toBe(0.2); // default 20%
+    expect(mstime.timers.block55.plugins['msplugin-trim-mean'].percent).toBe(0.2); // default 20%
   });
 
-  it('mstimePluginChartist default config', () => {
+  it('msPluginChartist default config', () => {
     window.Chartist = { Line: () => {} }; // mock Chartist
-    mstime.plugins([{ plugin: mstime.mstimePluginChartist }]);
+    mstime.plugins([{ plugin: mstime.msPluginChartist }]);
     mstime.start('block60');
     dummyLoop();
     const item = mstime.end('block60');
-    expect(mstime.timers.block60.plugins['mstime-plugin-chartist'].idAttr).toBe('data-mstime-id'); // default
+    expect(mstime.timers.block60.plugins['msplugin-chartist'].idAttr).toBe('data-mstime-id'); // default
   });
 
-  it('mstimePluginChartist set config', () => {
+  it('msPluginChartist set config', () => {
     window.Chartist = { Line: () => {} }; // mock Chartist
-    mstime.plugins([{ plugin: mstime.mstimePluginChartist, config: { idAttr: 'data-chart-id' } }]);
+    mstime.plugins([{ plugin: mstime.msPluginChartist, config: { idAttr: 'data-chart-id' } }]);
     mstime.start('block61');
     dummyLoop();
     const item = mstime.end('block61');
-    expect(mstime.timers.block61.plugins['mstime-plugin-chartist'].idAttr).toBe('data-chart-id');
+    expect(mstime.timers.block61.plugins['msplugin-chartist'].idAttr).toBe('data-chart-id');
   });
 });
