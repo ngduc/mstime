@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
 
-const present = require('./present')
-const { config, plugins, format } = require('./utils')
+const present = require('./present');
+const { config, plugins, format } = require('./utils');
+const mstimePluginTrimMean = require('./default-plugins/mstimePluginTrimMean');
 
 /**
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
-let timers = {}
-let configRef = {} // reference of config()
+let timers = {};
+let configRef = {}; // reference of config()
 
 /**
  * Start a timer to measure code performance.
@@ -18,92 +19,95 @@ let configRef = {} // reference of config()
  * @returns {Object} - Timer object.
  */
 const start = (name, options = {}) => {
-  const startTime = present() // should be the very first operation!
-  configRef = config()
+  const startTime = present(); // should be the very first operation!
+  configRef = config();
   if (configRef.consoleTime) {
-    console.time(name)
+    console.time(name);
   }
   timers[name] = timers[name] || {
-    entries: [],
+    entries: []
     // last: 0, // calculate for these later. (on end())
     // sum: 0,
     // avg: 0,
-  }
+  };
   const entry = {
     timestamp: +new Date(),
-    start: format(startTime),
-  }
+    start: format(startTime)
+  };
   if (options.data) {
-    entry.data = options.data
+    entry.data = options.data;
   }
-  timers[name].entries.push(entry)
-  return timers[name]
-}
+  timers[name].entries.push(entry);
+  return timers[name];
+};
 
 /**
  * End an existing timer and calculate for diff, sum, avg.
  * @param {string} name - Name of an existing timer.
  * @returns {Object} - Timer object.
  */
-const end = (name) => {
-  const endTime = present() // should be the very first operation!
+const end = name => {
+  const endTime = present(); // should be the very first operation!
   if (configRef.consoleTime) {
-    console.timeEnd(name)
+    console.timeEnd(name);
   }
-  const timer = timers[name]
-  timer.output = {}
+  const timer = timers[name];
+  if (!timer) {
+    return null; // missing data (user called "end" without calling "start" first).
+  }
+  timer.plugins = {};
 
-  const { entries } = timer
-  const lastEntry = entries[entries.length - 1]
-  lastEntry.end = format(endTime)
-  lastEntry.diff = format(lastEntry.end - lastEntry.start)
+  const { entries } = timer;
+  const lastEntry = entries[entries.length - 1];
+  lastEntry.end = format(endTime);
+  lastEntry.diff = format(lastEntry.end - lastEntry.start);
 
   // calculate for more useful values
-  timer.last = lastEntry.diff
-  timer.sum = format((timer.sum || 0) + lastEntry.diff)
-  timer.avg = format(timer.sum / entries.length)
+  timer.last = lastEntry.diff;
+  timer.sum = format((timer.sum || 0) + lastEntry.diff);
+  timer.avg = format(timer.sum / entries.length);
 
-  // run every Plugin & keep their outputs in "output {}"
-  const allPlugins = plugins()
+  // run every Plugin & keep their plugins in "plugins {}"
+  const allPlugins = plugins();
   for (let i = 0; i < allPlugins.length; i += 1) {
-    const pluginObject = allPlugins[i]
-    const { plugin } = pluginObject
+    const pluginObject = allPlugins[i];
+    const { plugin } = pluginObject;
     if (plugin && plugin.run) {
-      timer.output[plugin.name] = plugin.run(timer)
+      timer.plugins[plugin.name] = plugin.run(timers, timer);
     }
   }
-  return timer
-}
+  return timer;
+};
 
 /**
  * Clear a timer.
  * @param {string} name - Timer name to clear.
  */
-const clear = (name) => {
-  delete timers[name]
-}
+const clear = name => {
+  delete timers[name];
+};
 
 /**
  * Plugin: use localStorage to store/load mstime.timers object.
  */
 const mstimePluginUseLocalStorage = () => {
-  const mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'))
+  const mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
   if (mstimeTimersObj) {
-    timers = mstimeTimersObj
+    timers = mstimeTimersObj;
   }
   return {
     name: 'mstime-plugin-use-local-storage',
-    run: (timerData) => {
-      global.localStorage.setItem('mstime.timers', JSON.stringify(timers))
-      const lsData = global.localStorage.getItem('mstime.timers')
+    run: timerData => {
+      global.localStorage.setItem('mstime.timers', JSON.stringify(timers));
+      const lsData = global.localStorage.getItem('mstime.timers');
       return {
         createdAt: new Date().getTime(),
         totalEntries: timerData.entries.length,
-        size: lsData.length,
-      }
-    },
-  }
-}
+        size: lsData.length
+      };
+    }
+  };
+};
 
 export default {
   config,
@@ -113,4 +117,5 @@ export default {
   end,
   clear,
   mstimePluginUseLocalStorage,
-}
+  mstimePluginTrimMean
+};

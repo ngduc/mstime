@@ -62,11 +62,10 @@ A plugin is just a function that processes data and returns this structure:
 ```js
 const plugin = ({ config }) => ({
   name: "mstime-plugin-example",
-  run: timerData => {
+  run: (allData, timerData) => {
     const output = "do something useful here with timerData...";
     return {
-      createdAt: present(),
-      output // property & value can be anything
+      // property & value can be anything
     };
   }
 });
@@ -77,7 +76,8 @@ const plugin = ({ config }) => ({
 ### List of Plugins:
 
 * mstime-plugin-use-local-storage
-* (create your plugin & add it here)
+* mstime-plugin-trim-mean
+* (create your plugin & add it here...)
 
 ## Dependencies
 

@@ -1,26 +1,13 @@
 {
   "parser": "babel-eslint",
-  "extends": [
-    "airbnb-base",
-    "plugin:flowtype/recommended"
-  ],
-  "plugins": [
-    "flowtype",
-    "flowtype-errors",
-    "jsdoc"
-  ],
+  "extends": ["airbnb-base", "plugin:flowtype/recommended"],
+  "plugins": ["flowtype", "flowtype-errors", "jsdoc"],
   "env": {
     "jest": true
   },
   "rules": {
-    "semi": [
-      2,
-      "never"
-    ],
-    "comma-dangle": [
-      2,
-      "always-multiline"
-    ],
+    "comma-dangle": 0,
+    "arrow-parens": 0,
     "flowtype-errors/show-errors": 2,
     // JSDoc
     "jsdoc/check-param-names": 1,
@@ -33,6 +20,7 @@
     "jsdoc/require-param-description": 1,
     "jsdoc/require-param-type": 1,
     "jsdoc/require-returns-description": 1,
-    "jsdoc/require-returns-type": 1
+    "jsdoc/require-returns-type": 1,
+    "import/prefer-default-export": 0
   }
 }

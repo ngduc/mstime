@@ -3,10 +3,10 @@
  */
 let allConfig = {
   decimalDigits: 2,
-  consoleTime: false,
-}
+  consoleTime: false
+};
 
-let allPlugins = []
+let allPlugins = [];
 
 /**
  * Update or get config object. This will override the default config's properties.
@@ -14,8 +14,8 @@ let allPlugins = []
  * @returns {Object} - Final config object.
  */
 export function config(updateConfig = {}) {
-  allConfig = { ...allConfig, ...updateConfig }
-  return allConfig
+  allConfig = { ...allConfig, ...updateConfig };
+  return allConfig;
 }
 
 /**
@@ -28,14 +28,16 @@ export function config(updateConfig = {}) {
  */
 export function plugins(pluginArray) {
   if (pluginArray) {
-    allPlugins = pluginArray
+    allPlugins = pluginArray;
     // iterate through plugins & instantiate plugin with config:
     for (let i = 0; i < allPlugins.length; i += 1) {
-      const pluginObject = allPlugins[i]
-      pluginObject.plugin = pluginObject.plugin({ config: pluginObject.config })
+      const pluginObject = allPlugins[i];
+      pluginObject.plugin = pluginObject.plugin({
+        config: pluginObject.config
+      });
     }
   }
-  return allPlugins
+  return allPlugins;
 }
 
 /**
@@ -44,7 +46,7 @@ export function plugins(pluginArray) {
  * @returns {number} - Formatted number.
  */
 export function format(floatNum) {
-  return parseFloat(floatNum.toFixed(allConfig.decimalDigits))
+  return parseFloat(floatNum.toFixed(allConfig.decimalDigits));
 }
 
 /**
@@ -53,5 +55,5 @@ export function format(floatNum) {
  * @returns {number} - Sum of all numbers.
  */
 export function sumArray(arr) {
-  return arr.reduce((a, b) => a + b)
+  return arr.reduce((a, b) => a + b);
 }
