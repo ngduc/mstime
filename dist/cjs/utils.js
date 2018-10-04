@@ -44,7 +44,9 @@ function plugins(pluginArray) {
     // iterate through plugins & instantiate plugin with config:
     for (var i = 0; i < allPlugins.length; i += 1) {
       var pluginObject = allPlugins[i];
-      pluginObject.plugin = pluginObject.plugin({ config: pluginObject.config });
+      pluginObject.plugin = pluginObject.plugin({
+        config: pluginObject.config
+      });
     }
   }
   return allPlugins;

@@ -5,16 +5,16 @@ var present = require('./present');
 var _require = require('./utils'),
     config = _require.config,
     plugins = _require.plugins,
-    format = _require.format,
-    sumArray = _require.sumArray;
+    format = _require.format;
+
+var mstimePluginTrimMean = require('./default-plugins/mstimePluginTrimMean');
 
 /**
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
-
-
 var timers = {};
+var configRef = {}; // reference of config()
 
 /**
  * Start a timer to measure code performance.
@@ -26,10 +26,11 @@ var timers = {};
 var start = function start(name) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  if (config().consoleTime) {
+  var startTime = present(); // should be the very first operation!
+  configRef = config();
+  if (configRef.consoleTime) {
     console.time(name);
   }
-  var startTime = present();
   timers[name] = timers[name] || {
     entries: []
     // last: 0, // calculate for these later. (on end())
@@ -37,6 +38,7 @@ var start = function start(name) {
     // avg: 0,
   };
   var entry = {
+    timestamp: +new Date(),
     start: format(startTime)
   };
   if (options.data) {
@@ -52,39 +54,38 @@ var start = function start(name) {
  * @returns {Object} - Timer object.
  */
 var end = function end(name) {
-  if (config().consoleTime) {
+  var endTime = present(); // should be the very first operation!
+  if (configRef.consoleTime) {
     console.timeEnd(name);
   }
-  var endTime = present();
-  var item = timers[name];
-  item.output = {};
+  var timer = timers[name];
+  if (!timer) {
+    return null; // missing data (user called "end" without calling "start" first).
+  }
+  timer.plugins = {};
 
-  var entries = item.entries;
+  var entries = timer.entries;
 
   var lastEntry = entries[entries.length - 1];
   lastEntry.end = format(endTime);
   lastEntry.diff = format(lastEntry.end - lastEntry.start);
 
   // calculate for more useful values
-  item.last = lastEntry.diff;
+  timer.last = lastEntry.diff;
+  timer.sum = format((timer.sum || 0) + lastEntry.diff);
+  timer.avg = format(timer.sum / entries.length);
 
-  var diffArr = entries.map(function (e) {
-    return e.diff;
-  });
-  item.sum = format(sumArray(diffArr));
-  item.avg = format(item.sum / entries.length);
-
-  // run every Plugin & keep their outputs in "output {}"
+  // run every Plugin & keep their plugins in "plugins {}"
   var allPlugins = plugins();
   for (var i = 0; i < allPlugins.length; i += 1) {
     var pluginObject = allPlugins[i];
     var plugin = pluginObject.plugin;
 
     if (plugin && plugin.run) {
-      item.output[plugin.name] = plugin.run(item);
+      timer.plugins[plugin.name] = plugin.run(timers, timer);
     }
   }
-  return item;
+  return timer;
 };
 
 /**
@@ -96,7 +97,7 @@ var clear = function clear(name) {
 };
 
 /**
- * Default plugin: use localStorage to store/load mstime.timers object.
+ * Plugin: use localStorage to store/load mstime.timers object.
  */
 var mstimePluginUseLocalStorage = function mstimePluginUseLocalStorage() {
   var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
@@ -124,5 +125,6 @@ export default {
   start: start,
   end: end,
   clear: clear,
-  mstimePluginUseLocalStorage: mstimePluginUseLocalStorage
+  mstimePluginUseLocalStorage: mstimePluginUseLocalStorage,
+  mstimePluginTrimMean: mstimePluginTrimMean
 };
