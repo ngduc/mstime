@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import mstime from '../src';
+import msPluginTrimMean from '../src/plugins/msPluginTrimMean';
+import msPluginChartist from '../src/plugins/msPluginChartist';
 
 window.TEST_ENV = true;
 
@@ -113,7 +115,7 @@ describe('mstime', () => {
   });
 
   it('msPluginTrimMean should work & return a mean value', () => {
-    mstime.plugins([{ plugin: mstime.msPluginTrimMean, config: { percent: 0.1 } }]);
+    mstime.plugins([{ plugin: msPluginTrimMean, config: { percent: 0.1 } }]);
     const LOOPS = 10;
     for (let i = 0; i < LOOPS; i += 1) {
       mstime.start('block50');
@@ -126,7 +128,7 @@ describe('mstime', () => {
   });
 
   it('msPluginTrimMean default config', () => {
-    mstime.plugins([{ plugin: mstime.msPluginTrimMean }]);
+    mstime.plugins([{ plugin: msPluginTrimMean }]);
     mstime.start('block55');
     dummyLoop();
     const item = mstime.end('block55');
@@ -135,7 +137,7 @@ describe('mstime', () => {
 
   it('msPluginChartist default config', () => {
     window.Chartist = { Line: () => {} }; // mock Chartist
-    mstime.plugins([{ plugin: mstime.msPluginChartist }]);
+    mstime.plugins([{ plugin: msPluginChartist }]);
     mstime.start('block60');
     dummyLoop();
     const item = mstime.end('block60');
@@ -144,7 +146,7 @@ describe('mstime', () => {
 
   it('msPluginChartist set config', () => {
     window.Chartist = { Line: () => {} }; // mock Chartist
-    mstime.plugins([{ plugin: mstime.msPluginChartist, config: { idAttr: 'data-chart-id' } }]);
+    mstime.plugins([{ plugin: msPluginChartist, config: { idAttr: 'data-chart-id' } }]);
     mstime.start('block61');
     dummyLoop();
     const item = mstime.end('block61');

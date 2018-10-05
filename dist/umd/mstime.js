@@ -12,14 +12,15 @@ var _require = require('./utils');
 var config = _require.config;
 var plugins = _require.plugins;
 var format = _require.format;
-
-var msPluginTrimMean = require('./default-plugins/msPluginTrimMean');
-var msPluginChartist = require('./default-plugins/msPluginChartist');
+// const msPluginTrimMean = require('./plugins/msPluginTrimMean');
+// const msPluginChartist = require('./plugins/msPluginChartist');
 
 /**
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
+
+
 var timers = {};
 var configRef = {}; // reference of config()
 
@@ -157,9 +158,9 @@ var index = {
   start: start,
   end: end,
   clear: clear,
-  msPluginUseLocalStorage: msPluginUseLocalStorage,
-  msPluginTrimMean: msPluginTrimMean,
-  msPluginChartist: msPluginChartist
+  msPluginUseLocalStorage: msPluginUseLocalStorage
+  // msPluginTrimMean,
+  // msPluginChartist
 };
 
 return index;

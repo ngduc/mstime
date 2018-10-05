@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/ngduc/mstime/master.svg?style=flat-square)](https://travis-ci.org/ngduc/mstime) [![Coverage Status](https://img.shields.io/codecov/c/github/ngduc/mstime/master.svg?style=flat-square)](https://codecov.io/gh/ngduc/mstime/branch/master)
 [![NPM](https://img.shields.io/npm/dt/mstime.svg?style=flat-square)](https://www.npmjs.com/package/mstime)
 
-a lightweight module to measure code performance in millisecond (ms), run on Node & browser.
+a lightweight module (2KB gzip) to measure code performance in millisecond (ms), run on Node & browser. No dependencies!
 
 _mstime_ uses [performance.now Web API](https://developers.google.com/web/updates/2012/08/When-milliseconds-are-not-enough-performance-now) (high resolution timer) to measure the difference between start & end points.
 

@@ -1,10 +1,11 @@
-## [0.5.0] - 2018-10-04
+## [0.6.0] - 2018-10-04
 
 ### Added
 - add mstimePluginChartist - plot data using Chartist.
 - mstime.clear() will invoke plugin.clear()
 ### Changed
 - BREAKING: rename "mstime-plugin-" prefixes to "msplugin-"
+- BREAKING: move plugins to "src/plugins", exclude them from the main build.
 
 ## [0.3.3] - 2018-10-03
 

@@ -2,8 +2,8 @@
 
 const present = require('./present');
 const { config, plugins, format } = require('./utils');
-const msPluginTrimMean = require('./default-plugins/msPluginTrimMean');
-const msPluginChartist = require('./default-plugins/msPluginChartist');
+// const msPluginTrimMean = require('./plugins/msPluginTrimMean');
+// const msPluginChartist = require('./plugins/msPluginChartist');
 
 /**
  * Map of timers.
@@ -141,7 +141,7 @@ export default {
   start,
   end,
   clear,
-  msPluginUseLocalStorage,
-  msPluginTrimMean,
-  msPluginChartist
+  msPluginUseLocalStorage
+  // msPluginTrimMean,
+  // msPluginChartist
 };

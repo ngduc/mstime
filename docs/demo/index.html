@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>mstime - Example</title>
+  <title>mstime - Examples</title>
   <link rel="stylesheet" type="text/css" href="">
 
   <!-- Chartist Dependencies: CSS, JS - required for "mstime.msPluginChartist" -->
@@ -31,12 +31,11 @@
         j += 1
       }
     }
+    R((require, module, exports) => {
+      const msPluginTrimMean = require('../../dist/cjs/plugins/msPluginTrimMean');
+      const msPluginChartist = require('../../dist/cjs/plugins/msPluginChartist');
+      const mstime = require('../../dist/cjs/index');
 
-    R("../../dist/cjs/index", function (err, mstime) {
-      if (err) {
-        console.error(err);
-        return;
-      }
       mstime.config({
         consoleTime: true, // enable: console.time()
       })
@@ -44,9 +43,9 @@
       mstime.plugins([{
         plugin: mstime.msPluginUseLocalStorage
       }, {
-        plugin: mstime.msPluginTrimMean
+        plugin: msPluginTrimMean
       }, {
-        plugin: mstime.msPluginChartist
+        plugin: msPluginChartist
       }])
 
       window.clear = () => {
@@ -64,25 +63,24 @@
         mstime.end('timer2')
       }
       window.exec();
-    });
+    })
   </script>
+
+
   <p>
     Example: Execution Time of a dummy for-loop.
     <p />(Open Web Inspector to see console logs)
     <div>
       <button onclick="javascript: window.clear(); window.exec()">Clear Data</button>
-      <button onclick="javascript: window.exec()">Refresh Page (Graph)</button>
+      <button onclick="javascript: window.exec()">Run & Measure</button>
     </div>
     <p><a href="https://github.com/ngduc/mstime">Back to Github Repo</a></p>
   </p>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127037248-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date()); gtag('config', 'UA-127037248-1');
-  </script>
-
+  <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date()); gtag('config', 'UA-127037248-1');</script>
 </body>
 
 </html>
