@@ -1,7 +1,7 @@
 {
   "name": "mstime",
-  "version": "0.6.0",
-  "description": "a module to measure code performance in time (ms)",
+  "version": "0.6.1",
+  "description": "a lightweight module (2KB gzip) to measure & visualize code performance in millisecond (ms), run on Node & browser. No dependencies!",
   "main": "dist/cjs/index.js",
   "browser": "dist/umd/mstime.js",
   "module": "dist/es/index.js",

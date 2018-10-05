@@ -69,7 +69,7 @@ describe('mstime', () => {
   });
 
   it('attachs data object', () => {
-    mstime.start('block4', { data: { moreData: 123 } });
+    mstime.start('block4', { moreData: 123 });
     dummyLoop();
     const item = mstime.end('block4');
     const entry = item.entries[item.entries.length - 1];
