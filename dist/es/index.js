@@ -22,12 +22,10 @@ var configRef = {}; // reference of config()
  * Start a timer to measure code performance.
  * The same timer can be started and ended multiple times.
  * @param {string} name - Name of a new or existing timer.
- * @param {Object} options - (optional) More options (data, etc.).
+ * @param {Object} data - (optional) More data (id, etc.).
  * @returns {Object} - Timer object.
  */
-var start = function start(name) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+var start = function start(name, data) {
   var startTime = present(); // should be the very first operation!
   configRef = config();
   if (configRef.consoleTime) {
@@ -43,8 +41,8 @@ var start = function start(name) {
     timestamp: +new Date(),
     start: startTime
   };
-  if (options.data) {
-    entry.data = options.data;
+  if (data) {
+    entry.data = data;
   }
   timers[name].entries.push(entry);
   return timers[name];
