@@ -80,7 +80,9 @@ const pluginExample = ({ config }) => ({
 - msplugin-use-local-storage   use localStorage to store timer data. 
 - msplugin-trim-mean           calculate for trimmed mean.
 - msplugin-chartist            plot data using Chartist.
-- msplugin-find-outliers       (TODO)
+
+- msplugin-find-outliers       (In Progress: find outliers)
+- msplugin-save-to-db          (In Progress: save timer data to DB)
 - (create your plugin & add it here...)
 ```
 

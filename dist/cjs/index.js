@@ -9,8 +9,6 @@ var _require = require('./utils'),
     config = _require.config,
     plugins = _require.plugins,
     format = _require.format;
-// const msPluginTrimMean = require('./plugins/msPluginTrimMean');
-// const msPluginChartist = require('./plugins/msPluginChartist');
 
 /**
  * Map of timers.
@@ -20,6 +18,13 @@ var _require = require('./utils'),
 
 var timers = {};
 var configRef = {}; // reference of config()
+
+var getTimers = function getTimers() {
+  return timers;
+};
+var setTimers = function setTimers(timersData) {
+  timers = timersData;
+};
 
 /**
  * Start a timer to measure code performance.
@@ -121,7 +126,7 @@ var clear = function clear(name) {
 };
 
 /**
- * Plugin: use localStorage to store/load mstime.timers object.
+ * Built-in Plugin: use localStorage to store/load mstime.timers object.
  */
 var msPluginUseLocalStorage = function msPluginUseLocalStorage() {
   var mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
@@ -150,11 +155,11 @@ exports.default = {
   config: config,
   plugins: plugins,
   timers: timers,
+  getTimers: getTimers,
+  setTimers: setTimers,
   start: start,
   end: end,
   clear: clear,
   msPluginUseLocalStorage: msPluginUseLocalStorage
-  // msPluginTrimMean,
-  // msPluginChartist
 };
 module.exports = exports.default;

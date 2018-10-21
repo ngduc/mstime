@@ -2,8 +2,6 @@
 
 const present = require('./present');
 const { config, plugins, format } = require('./utils');
-// const msPluginTrimMean = require('./plugins/msPluginTrimMean');
-// const msPluginChartist = require('./plugins/msPluginChartist');
 
 /**
  * Map of timers.
@@ -11,6 +9,11 @@ const { config, plugins, format } = require('./utils');
  */
 let timers = {};
 let configRef = {}; // reference of config()
+
+const getTimers = () => timers;
+const setTimers = timersData => {
+  timers = timersData;
+};
 
 /**
  * Start a timer to measure code performance.
@@ -109,7 +112,7 @@ const clear = name => {
 };
 
 /**
- * Plugin: use localStorage to store/load mstime.timers object.
+ * Built-in Plugin: use localStorage to store/load mstime.timers object.
  */
 const msPluginUseLocalStorage = () => {
   const mstimeTimersObj = JSON.parse(global.localStorage.getItem('mstime.timers'));
@@ -138,10 +141,10 @@ export default {
   config,
   plugins,
   timers,
+  getTimers,
+  setTimers,
   start,
   end,
   clear,
   msPluginUseLocalStorage
-  // msPluginTrimMean,
-  // msPluginChartist
 };

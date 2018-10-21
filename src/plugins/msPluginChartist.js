@@ -1,7 +1,6 @@
-// const { format } = require('../utils');
-
-// Usage: mstime.plugins([ { plugin: mstimePluginChartist, config: { container: '' } } ])
-//    Plot data using Chartist - http://gionkunz.github.io/chartist-js
+// Usage: mstime.plugins([ { plugin: mstimePluginChartist, config: { idAttr: 'data-mstime-id' } } ])
+//    Make sure you initialize Chartist & have DOM Element(s) with an id attribute. (value is timer name)
+//    Example - https://rawgit.com/ngduc/mstime/master/docs/demo/index.html
 export default function msPluginChartist({ config = {} }) {
   // if (typeof Chartist !== 'undefined') {
   //   console.error('Chartist is not available - see: http://gionkunz.github.io/chartist-js');
@@ -30,6 +29,7 @@ export default function msPluginChartist({ config = {} }) {
           }
         ]
       };
+      // query for Chart Container Element:
       const queryStr = `[${idAttr}="${timerData.name}"]`;
       if (window && !window.TEST_ENV && document.querySelectorAll(queryStr).length === 0) {
         return {};

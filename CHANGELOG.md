@@ -1,3 +1,8 @@
+## [0.6.2] - 2018-10-21
+
+### Added
+- getTimers(), setTimers(): get/set all timer data.
+
 ## [0.6.0] - 2018-10-04
 
 ### Added

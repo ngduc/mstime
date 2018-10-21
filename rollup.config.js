@@ -4,7 +4,7 @@ import uglify from 'rollup-plugin-uglify';
 import bundleSize from 'rollup-plugin-bundle-size';
 import commonjs from 'rollup-plugin-commonjs';
 
-const name = `mstime`;
+const name = 'mstime';
 
 const plugins = [
   babel(),
@@ -13,18 +13,18 @@ const plugins = [
     jsnext: true
   }),
   commonjs({
-    include: `node_modules/**`
+    include: 'node_modules/**'
   }),
   bundleSize()
 ];
 
-const isProd = process.env.NODE_ENV === `production`;
+const isProd = process.env.NODE_ENV === 'production';
 if (isProd) plugins.push(uglify());
 
 export default {
-  entry: `src/index.js`,
+  entry: 'src/index.js',
   plugins,
-  dest: `dist/umd/${name}${isProd ? `.min` : ``}.js`,
+  dest: `dist/umd/${name}${isProd ? '.min' : ''}.js`,
   moduleName: name,
-  format: `umd`
+  format: 'umd'
 };
