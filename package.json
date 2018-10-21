@@ -65,7 +65,7 @@
     "codecov": "^2.3.0",
     "coveralls": "^3.0.2",
     "cross-env": "^5.0.5",
-    "eslint": "^4.9.0",
+    "eslint": "^5.7.0",
     "eslint-config-airbnb-base": "^12.0.2",
     "eslint-config-devine": "^1.7.1",
     "eslint-plugin-babel": "^4.1.2",
