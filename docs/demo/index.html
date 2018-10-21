@@ -13,6 +13,8 @@
   <script>
     // https://github.com/Stuk/require1k/blob/master/require1k.min.js
     R = function (e, n, v1) { function t(e, o, u, a) { if (e.g) return o(e.e, e); var c = e.g = e.l, f = new XMLHttpRequest; f.onload = function (i, l) { function s() { l-- || o(n, e) } 200 == f.status || e.t ? (i = [], (e.t = e.t || f.response).replace(/(?:^|[^\w\$_.])require\s*\(\s*["']([^"']*)["']\s*\)/g, function (e, n) { i.push(n) }), l = i.length, i.map(function (o) { t(r(e.l, o), s, "." != o[0] ? c + "/../" : n, o) }), s()) : u ? t(e.n = r(u += "../", a), o, u, a) : (e.e = f, o(f, e)) }, e.t ? f.onload() : (f.open("GET", c, !0), f.send()) } function r(e, n, t) { if (e.e) throw e.e; return n ? (f.href = e, i.href = "." != n[0] ? "./node_modules/" + n : n, t = i.href + ".js", f.href = "", u[t] = u[t] || { l: t }) : e.n ? r(e.n) : (e[c] || (e.f || a("(function(require," + c + ",module){" + e.t + "\n})//# sourceURL=" + e.l))(function (n) { return r(r(e.l, n)) }, e[c] = {}, e), e[c]) } function o(e, n) { t(e.call ? { l: "", t: "" + e, f: e } : r("", e), function (t, o) { try { e = r(o) } catch (u) { t = u } n && n(t, e) }) } var u = {}, a = eval, c = "createElement", f = e[c]("base"), i = e[c]("a"); return e.head.appendChild(f), c = e.querySelector("script[data-main]"), c && o(c.dataset.main), c = "exports", o }(document);
+    // unfetch
+    module.exports = function (e, n) { return n = n || {}, new Promise(function (t, r) { var s = new XMLHttpRequest; for (var o in s.open(n.method || "get", e, !0), n.headers) s.setRequestHeader(o, n.headers[o]); function u() { var e, n = [], t = [], r = {}; return s.getAllResponseHeaders().replace(/^(.*?):[^\S\n]*([\s\S]*?)$/gm, function (s, o, u) { n.push(o = o.toLowerCase()), t.push([o, u]), r[o] = (e = r[o]) ? e + "," + u : u }), { ok: 2 == (s.status / 100 | 0), status: s.status, statusText: s.statusText, url: s.responseURL, clone: u, text: function () { return Promise.resolve(s.responseText) }, json: function () { return Promise.resolve(s.responseText).then(JSON.parse) }, blob: function () { return Promise.resolve(new Blob([s.response])) }, headers: { keys: function () { return n }, entries: function () { return t }, get: function (e) { return r[e.toLowerCase()] }, has: function (e) { return e.toLowerCase() in r } } } } s.withCredentials = "include" == n.credentials, s.onload = function () { t(u()) }, s.onerror = r, s.send(n.body || null) }) };
   </script>
 </head>
 
@@ -31,17 +33,57 @@
         j += 1
       }
     }
+
     R((require, module, exports) => {
       const msPluginTrimMean = require('../../dist/cjs/plugins/msPluginTrimMean');
       const msPluginChartist = require('../../dist/cjs/plugins/msPluginChartist');
       const mstime = require('../../dist/cjs/index');
+
+      const msPluginPostToDashboard = ({ config = {} }) => {
+        const API_URL = config.API_URL
+        const data = fetch(API_URL + '/mstime_v1_load_project/duc/p1', {
+          method: 'GET',
+          cache: 'no-cache',
+          credentials: 'omit'
+        }).then((res, err) => {
+          res.json().then(res => {
+            mstime.setTimers(res.data)
+            console.log('timersData - ', res.data);
+          })
+        });
+
+        return {
+          name: 'msplugin-post-to-dashboard',
+          run: (allData, timerData) => {
+            const payload = {
+              accountId: 'duc',
+              projectId: 'p1',
+              name: timerData.name,
+              ...timerData.entries[timerData.entries.length - 1]
+            }
+            // POST to "mstime dashboard" service.
+            fetch(API_URL + '/mstime_v1_add_entry/duc/p1/' + timerData.name, {
+              method: 'POST',
+              cache: 'no-cache',
+              credentials: 'omit', // include OR omit
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            });
+          }
+        }
+      }
 
       mstime.config({
         consoleTime: true, // enable: console.time()
       })
 
       mstime.plugins([{
-        plugin: mstime.msPluginUseLocalStorage
+        // plugin: mstime.msPluginUseLocalStorage
+        plugin: msPluginPostToDashboard, config: {
+          API_URL: 'https://o3ir77ao1b.execute-api.us-west-2.amazonaws.com/Prod' // 'http://127.0.0.1:3000' // 'https://o3ir77ao1b.execute-api.us-west-2.amazonaws.com/Prod'
+        }
       }, {
         plugin: msPluginTrimMean
       }, {
@@ -61,6 +103,7 @@
         mstime.start('timer2');
         dummyLoop()
         mstime.end('timer2')
+        console.log(999, mstime.getTimers());
       }
       window.exec();
     })

@@ -1,6 +1,6 @@
 {
   "name": "mstime",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "a lightweight module (2KB gzip) to measure & visualize code performance in millisecond (ms), run on Node & browser. No dependencies!",
   "main": "dist/cjs/index.js",
   "browser": "dist/umd/mstime.js",
@@ -30,7 +30,7 @@
     "build:watch": "clear && rimraf dist/cjs && cross-env BABEL_ENV=cjs babel -w src --out-dir dist/cjs",
     "build:es": "rimraf dist/es && cross-env BABEL_ENV=es babel src --out-dir dist/es",
     "build:cjs": "rimraf dist/cjs && cross-env BABEL_ENV=cjs babel src --out-dir dist/cjs",
-    "build:umd": "rimraf dist/umd && cross-env BABEL_ENV=es rollup -c & cross-env BABEL_ENV=es NODE_ENV=production rollup -c",
+    "build:umd": "cross-env BABEL_ENV=es rollup -c & cross-env BABEL_ENV=es NODE_ENV=production rollup -c",
     "demo": "echo && echo --- OPEN: http://127.0.0.1:8088/docs/demo --- && echo && http-server . -p 8088"
   },
   "keywords": [
