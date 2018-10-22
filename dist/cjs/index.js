@@ -1,20 +1,20 @@
 'use strict';
 
 exports.__esModule = true;
-/* eslint-disable no-console */
 
-var present = require('./present');
+var _present = require('./present');
 
-var _require = require('./utils'),
-    config = _require.config,
-    plugins = _require.plugins,
-    format = _require.format;
+var _present2 = _interopRequireDefault(_present);
+
+var _utils = require('./utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
-
+/* eslint-disable no-console */
 
 var timers = {};
 var configRef = {}; // reference of config()
@@ -34,8 +34,8 @@ var setTimers = function setTimers(timersData) {
  * @returns {Object} - Timer object.
  */
 var start = function start(name, data) {
-  var startTime = present(); // should be the very first operation!
-  configRef = config();
+  var startTime = (0, _present2.default)(); // should be the very first operation!
+  configRef = (0, _utils.config)();
   if (configRef.consoleTime) {
     console.time(name);
   }
@@ -62,7 +62,7 @@ var start = function start(name, data) {
  * @returns {Object} - Timer object.
  */
 var end = function end(name) {
-  var endTime = present(); // should be the very first operation!
+  var endTime = (0, _present2.default)(); // should be the very first operation!
   if (configRef.consoleTime) {
     console.timeEnd(name);
   }
@@ -85,16 +85,16 @@ var end = function end(name) {
   // --- stop calculating from this point => format data: (formatting will affect any calculation)
   timer.name = name;
   lastEntry.avg = timer.avg; // keep current avg in each entry
-  timer.last = format(timer.last);
-  lastEntry.start = format(lastEntry.start);
-  lastEntry.end = format(endTime);
-  lastEntry.diff = format(lastEntry.diff);
+  timer.last = (0, _utils.format)(timer.last);
+  lastEntry.start = (0, _utils.format)(lastEntry.start);
+  lastEntry.end = (0, _utils.format)(endTime);
+  lastEntry.diff = (0, _utils.format)(lastEntry.diff);
 
-  timer.sum = format(timer.sum);
-  timer.avg = format(timer.avg);
+  timer.sum = (0, _utils.format)(timer.sum);
+  timer.avg = (0, _utils.format)(timer.avg);
 
   // run every Plugin & keep their plugins in "plugins {}"
-  var allPlugins = plugins();
+  var allPlugins = (0, _utils.plugins)();
   for (var i = 0; i < allPlugins.length; i += 1) {
     var pluginObject = allPlugins[i];
     var plugin = pluginObject.plugin;
@@ -114,7 +114,7 @@ var clear = function clear(name) {
   delete timers[name];
 
   // call plugin.clear() - if any:
-  var allPlugins = plugins();
+  var allPlugins = (0, _utils.plugins)();
   for (var i = 0; i < allPlugins.length; i += 1) {
     var pluginObject = allPlugins[i];
     var plugin = pluginObject.plugin;
@@ -152,8 +152,8 @@ var msPluginUseLocalStorage = function msPluginUseLocalStorage() {
 };
 
 exports.default = {
-  config: config,
-  plugins: plugins,
+  config: _utils.config,
+  plugins: _utils.plugins,
   timers: timers,
   getTimers: getTimers,
   setTimers: setTimers,

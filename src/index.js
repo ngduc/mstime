@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
-const present = require('./present');
-const { config, plugins, format } = require('./utils');
+import present from './present';
+import { config, plugins, format } from './utils';
 
 /**
  * Map of timers.

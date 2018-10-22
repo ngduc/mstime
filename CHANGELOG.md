@@ -1,7 +1,9 @@
-## [0.6.2] - 2018-10-21
+## [0.6.4] - 2018-10-21
 
 ### Added
 - getTimers(), setTimers(): get/set all timer data.
+### Changed
+- fix: umd bundle doesn't include present.js & utils.js.
 
 ## [0.6.0] - 2018-10-04
 

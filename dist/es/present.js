@@ -37,4 +37,5 @@ present.conflict = function () {
 };
 present.conflict();
 
-module.exports = present;
+// module.exports = present
+export default present;

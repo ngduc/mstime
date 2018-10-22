@@ -1,18 +1,12 @@
 /* eslint-disable no-console */
 
-var present = require('./present');
-
-var _require = require('./utils'),
-    config = _require.config,
-    plugins = _require.plugins,
-    format = _require.format;
+import present from './present';
+import { config, plugins, format } from './utils';
 
 /**
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
-
-
 var timers = {};
 var configRef = {}; // reference of config()
 

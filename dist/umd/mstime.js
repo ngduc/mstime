@@ -4,21 +4,112 @@
   (global.mstime = factory());
 }(this, (function () { 'use strict';
 
+/* eslint-disable */
+// source: https://github.com/dbkaplun/present
+var performance = global.performance || {};
+
+var present = function () {
+  // if NodeJS
+  if (typeof process !== 'undefined' && process.hrtime) {
+    return function () {
+      var time = process.hrtime();
+      return time[0] * 1e3 + time[1] / 1e6;
+    };
+  }
+
+  var names = ['now', 'webkitNow', 'msNow', 'mozNow', 'oNow'];
+  while (names.length) {
+    var name = names.shift();
+    if (name in performance) {
+      return performance[name].bind(performance);
+    }
+  }
+
+  var dateNow = Date.now || function () {
+    return new Date().getTime();
+  };
+  var navigationStart = (performance.timing || {}).navigationStart || dateNow();
+  return function () {
+    return dateNow() - navigationStart;
+  };
+}();
+
+present.performanceNow = performance.now;
+present.noConflict = function () {
+  performance.now = present.performanceNow;
+};
+present.conflict = function () {
+  performance.now = present;
+};
+present.conflict();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+/**
+ * Config object.
+ */
+var allConfig = {
+  decimalDigits: 2,
+  consoleTime: false
+};
+
+var allPlugins = [];
+
+/**
+ * Update or get config object. This will override the default config's properties.
+ * @param {Object} updateConfig - (optional) config object to update.
+ * @returns {Object} - Final config object.
+ */
+function config() {
+  var updateConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  allConfig = _extends({}, allConfig, updateConfig);
+  return allConfig;
+}
+
+/**
+ * Get or Set an array of plugins and their configs.
+ * After setting plugin array, each plugin will be instantiated with config.
+ * @param {Array} pluginArray - Array of plugins and their configs.
+ * @returns {Array} - Array of all plugins.
+ * @example mstime.plugins([ { plugin: mstimePluginUseLocalStorage, config: {} } ])
+ * @example mstime.plugins() // return array of plugins.
+ */
+function plugins(pluginArray) {
+  if (pluginArray) {
+    allPlugins = pluginArray;
+    // iterate through plugins & instantiate plugin with config:
+    for (var i = 0; i < allPlugins.length; i += 1) {
+      var pluginObject = allPlugins[i];
+      pluginObject.plugin = pluginObject.plugin({
+        config: pluginObject.config
+      });
+    }
+  }
+  return allPlugins;
+}
+
+/**
+ * Format a float number to have N digits (allConfig.decimalDigits).
+ * @param {number} floatNum - Float number to format.
+ * @returns {number} - Formatted number.
+ */
+function format(floatNum) {
+  return parseFloat(floatNum.toFixed(allConfig.decimalDigits));
+}
+
+/**
+ * Sum of all numbers in an array.
+ * @param {Array} arr - Array of numbers.
+ * @returns {number} - Sum of all numbers.
+ */
+
 /* eslint-disable no-console */
-
-var present = require('./present');
-
-var _require = require('./utils');
-var config = _require.config;
-var plugins = _require.plugins;
-var format = _require.format;
 
 /**
  * Map of timers.
  * @example { code1: { start: [t1], end: [t2], diff: [t2-t1], last, sum, avg } }
  */
-
-
 var timers = {};
 var configRef = {}; // reference of config()
 

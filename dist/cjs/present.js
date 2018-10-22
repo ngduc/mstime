@@ -1,5 +1,6 @@
 'use strict';
 
+exports.__esModule = true;
 /* eslint-disable */
 // source: https://github.com/dbkaplun/present
 var performance = global.performance || {};
@@ -39,4 +40,6 @@ present.conflict = function () {
 };
 present.conflict();
 
-module.exports = present;
+// module.exports = present
+exports.default = present;
+module.exports = exports.default;
