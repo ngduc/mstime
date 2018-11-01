@@ -66,7 +66,7 @@
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.5",
     "eslint": "^4.9.0",
-    "eslint-config-airbnb-base": "^12.0.2",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-devine": "^1.7.1",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-flowtype": "^2.39.1",
