@@ -1,3 +1,8 @@
+## [0.6.6] - 2019-06-05
+
+### Added
+- add mstime.runPlugins(timerName) to invoke plugins on a timer.
+
 ## [0.6.4] - 2018-10-21
 
 ### Added

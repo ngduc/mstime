@@ -120,6 +120,24 @@ var setTimers = function setTimers(timersData) {
   timers = timersData;
 };
 
+// run every Plugin & keep their plugin results in "timerData.plugins {}"
+// without "newTimerData", this will run plugins on existing data only.
+var runPlugins = function runPlugins(name) {
+  var newTimerData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+  var timerData = newTimerData || timers[name];
+
+  var allPlugins = plugins();
+  for (var i = 0; i < allPlugins.length; i += 1) {
+    var pluginObject = allPlugins[i];
+    var plugin = pluginObject.plugin;
+
+    if (plugin && plugin.run) {
+      timerData.plugins[plugin.name] = plugin.run(timers, timerData);
+    }
+  }
+};
+
 /**
  * Start a timer to measure code performance.
  * The same timer can be started and ended multiple times.
@@ -186,17 +204,9 @@ var end = function end(name) {
 
   timer.sum = format(timer.sum);
   timer.avg = format(timer.avg);
+  timer.count = entries.length;
 
-  // run every Plugin & keep their plugins in "plugins {}"
-  var allPlugins = plugins();
-  for (var i = 0; i < allPlugins.length; i += 1) {
-    var pluginObject = allPlugins[i];
-    var plugin = pluginObject.plugin;
-
-    if (plugin && plugin.run) {
-      timer.plugins[plugin.name] = plugin.run(timers, timer);
-    }
-  }
+  runPlugins(name, timer);
   return timer;
 };
 
@@ -253,6 +263,7 @@ var index = {
   setTimers: setTimers,
   start: start,
   end: end,
+  runPlugins: runPlugins,
   clear: clear,
   msPluginUseLocalStorage: msPluginUseLocalStorage
 };

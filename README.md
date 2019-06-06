@@ -83,6 +83,7 @@ const pluginExample = ({ config }) => ({
 - msplugin-chartist            plot data using Chartist.
 
 - msplugin-find-outliers       (In Progress: find outliers)
+- msplugin-post-to-api         (In Progress: post timer data to API)
 - msplugin-save-to-db          (In Progress: save timer data to DB)
 - (create your plugin & add it here...)
 ```

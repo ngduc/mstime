@@ -112,6 +112,8 @@ describe('mstime', () => {
     dummyLoop();
     mstime.end('block5');
     expect(mstime.timers.block5.plugins['msplugin-dummy'].totalEntries).toBe(1);
+    // also test mstime.runPlugins
+    mstime.runPlugins('block5');
   });
 
   it('msPluginTrimMean should work & return a mean value', () => {

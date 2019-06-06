@@ -15,6 +15,21 @@ const setTimers = timersData => {
   timers = timersData;
 };
 
+// run every Plugin & keep their plugin results in "timerData.plugins {}"
+// without "newTimerData", this will run plugins on existing data only.
+const runPlugins = (name, newTimerData = null) => {
+  const timerData = newTimerData || timers[name];
+
+  const allPlugins = plugins();
+  for (let i = 0; i < allPlugins.length; i += 1) {
+    const pluginObject = allPlugins[i];
+    const { plugin } = pluginObject;
+    if (plugin && plugin.run) {
+      timerData.plugins[plugin.name] = plugin.run(timers, timerData);
+    }
+  }
+};
+
 /**
  * Start a timer to measure code performance.
  * The same timer can be started and ended multiple times.
@@ -80,16 +95,9 @@ const end = name => {
 
   timer.sum = format(timer.sum);
   timer.avg = format(timer.avg);
+  timer.count = entries.length;
 
-  // run every Plugin & keep their plugins in "plugins {}"
-  const allPlugins = plugins();
-  for (let i = 0; i < allPlugins.length; i += 1) {
-    const pluginObject = allPlugins[i];
-    const { plugin } = pluginObject;
-    if (plugin && plugin.run) {
-      timer.plugins[plugin.name] = plugin.run(timers, timer);
-    }
-  }
+  runPlugins(name, timer);
   return timer;
 };
 
@@ -145,6 +153,7 @@ export default {
   setTimers,
   start,
   end,
+  runPlugins,
   clear,
   msPluginUseLocalStorage
 };
