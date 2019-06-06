@@ -132,7 +132,7 @@ var runPlugins = function runPlugins(name) {
     var pluginObject = allPlugins[i];
     var plugin = pluginObject.plugin;
 
-    if (plugin && plugin.run) {
+    if (timerData && plugin && plugin.run) {
       timerData.plugins[plugin.name] = plugin.run(timers, timerData);
     }
   }

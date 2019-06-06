@@ -24,7 +24,7 @@ const runPlugins = (name, newTimerData = null) => {
   for (let i = 0; i < allPlugins.length; i += 1) {
     const pluginObject = allPlugins[i];
     const { plugin } = pluginObject;
-    if (plugin && plugin.run) {
+    if (timerData && plugin && plugin.run) {
       timerData.plugins[plugin.name] = plugin.run(timers, timerData);
     }
   }

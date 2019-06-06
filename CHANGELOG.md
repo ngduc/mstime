@@ -1,4 +1,4 @@
-## [0.6.6] - 2019-06-05
+## [0.6.9] - 2019-06-05
 
 ### Added
 - add mstime.runPlugins(timerName) to invoke plugins on a timer.
