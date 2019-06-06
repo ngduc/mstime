@@ -1718,9 +1718,9 @@ escodegen@^1.6.1:
     source-map "~0.5.6"
 
 eslint-config-airbnb-base@^12.0.2:
-  version "12.0.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-12.0.2.tgz#45fea317d71b8f1da323c730f3a8471988757793"
-  integrity sha512-rQqOvAzrMC3BBCH6Dd/1RenDi+RW4vdgnh8xcPf6sgd324ad6aX7hSZ52L1SfDGe2VsZR2yB5uPvDfXYvxHZmA==
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-12.1.0.tgz#386441e54a12ccd957b0a92564a4bafebd747944"
+  integrity sha512-/vjm0Px5ZCpmJqnjIzcFb9TKZrKWz0gnuG/7Gfkt0Db1ELJR51xkZth+t14rYdqWgX836XbuxtArbIHlVhbLBA==
   dependencies:
     eslint-restricted-globals "^0.1.1"
 
