@@ -78,7 +78,7 @@
     "jest": "^20.0.4",
     "release-it": "^2.8.5",
     "rimraf": "^2.6.1",
-    "rollup": "^0.39.2",
+    "rollup": "^1.27.14",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-bundle-size": "^1.0.1",
     "rollup-plugin-commonjs": "^8.2.1",
